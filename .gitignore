@@ -1,0 +1,7 @@
+# Python Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment Variables (for keeping API keys secret later)
+.env

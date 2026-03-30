@@ -51,18 +51,11 @@ workflow.add_edge("analyze", END)
 # Compile the graph into a working app
 ai_app = workflow.compile()
 
-# 6. Test the Agent with some fake data!
-if __name__ == "__main__":
-    print("Starting the Early Risk Intervention Agent...\n")
+# 6. Create a function that FastAPI can call
+def run_ai_analysis(student_data_text: str) -> str:
+    print(f"🧠 Waking up AI to analyze: {student_data_text[:50]}...")
     
-    # Fake data for our test
-    test_input = {
-        "student_data": "Sarah is in 8th grade. Her recent math score was a 55% (a drop from her usual 85%). Her behavioral notes say she has been sleeping in class and seems disconnected."
-    }
+    # Run the graph with the real data passed from FastAPI
+    result = ai_app.invoke({"student_data": student_data_text})
     
-    # Run the graph!
-    result = ai_app.invoke(test_input)
-    
-    print("\n--- AGENT ANALYSIS ---")
-    print(result["risk_analysis"])
-    print("----------------------")
+    return result["risk_analysis"]

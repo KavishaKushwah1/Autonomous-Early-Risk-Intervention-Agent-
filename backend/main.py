@@ -3,9 +3,10 @@ from sqlalchemy.orm import Session
 from models import AcademicRecord, BehavioralEngagement
 import db_models
 from database import engine, Base, SessionLocal
-
-# --- NEW: Import the AI Brain ---
 from agent import run_ai_analysis 
+
+# --- 1. ADD THIS LINE ---
+from fastapi.middleware.cors import CORSMiddleware
 
 # Create the database tables
 Base.metadata.create_all(bind=engine)
@@ -15,13 +16,25 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Dependency to open and close the database connection for each request
+# --- 2. ADD THIS WHOLE BLOCK ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Dependency to open and close the database connection
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+# ... (Keep your @app.get and @app.post routes down here exactly as they are!) ...
+
 
 @app.get("/")
 def read_root():

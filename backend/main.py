@@ -4,6 +4,9 @@ from models import AcademicRecord, BehavioralEngagement
 import db_models
 from database import engine, Base, SessionLocal
 from agent import run_ai_analysis 
+from fastapi import HTTPException
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 # --- 1. ADD THIS LINE ---
 from fastapi.middleware.cors import CORSMiddleware
@@ -87,3 +90,36 @@ def record_behavioral_data(data: BehavioralEngagement, db: Session = Depends(get
         "message": f"Permanently saved {data.activity_type} engagement for student {data.student_id}",
         "ai_analysis": ai_intervention
     }
+# ==========================================
+# PHASE 2: GET ROUTE TO VIEW PAST RECORDS
+# ==========================================
+@app.get("/api/v1/students/{student_id}")
+def get_student_history(student_id: int, db: Session = Depends(get_db)):
+    """Fetch all academic records for a specific student."""
+    
+    # Updated to match the exact name used in your POST route!
+    records = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == student_id).all()
+    
+    if not records:
+        raise HTTPException(status_code=404, detail=f"No records found for Student ID {student_id}")
+    
+    return {
+        "status": "success", 
+        "student_id": student_id, 
+        "total_records": len(records),
+        "history": records
+    }
+# ==========================================
+# PHASE 3: CUSTOM ERROR HANDLING
+# ==========================================
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    """Catches bad data formats and returns a friendly error message."""
+    return JSONResponse(
+        status_code=422,
+        content={
+            "status": "error",
+            "message": "Oops! The data sent to the server is missing or in the wrong format. Please ensure IDs are numbers and text fields are not empty.",
+            "developer_details": exc.errors() # Keeps the exact error for debugging!
+        },
+    )

@@ -4,6 +4,9 @@ from models import AcademicRecord, BehavioralEngagement
 import db_models
 from database import engine, Base, SessionLocal
 from agent import run_ai_analysis 
+from fastapi import HTTPException
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 # --- 1. ADD THIS LINE ---
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,7 +45,7 @@ def read_root():
 
 @app.post("/api/v1/observe/academic")
 def record_academic_data(data: AcademicRecord, db: Session = Depends(get_db)):
-    # 1. Save to Database
+    # 1. Save the new grade to Database
     new_record = db_models.DBAcademicRecord(
         student_id=data.student_id,
         subject=data.subject,
@@ -52,17 +55,34 @@ def record_academic_data(data: AcademicRecord, db: Session = Depends(get_db)):
     db.add(new_record)
     db.commit()
     
-    # 2. --- THE AI TRIGGER ---
-    # We translate the raw data into a readable sentence for the AI
-    student_text = f"Student ID {data.student_id} just scored {data.score}% on their {data.subject} {data.assessment_type}."
+    # 2. --- NEW: FETCH BOTH ACADEMIC AND BEHAVIORAL HISTORY ---
+    past_academic = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == data.student_id).all()
+    past_behavior = db.query(db_models.DBBehavioralEngagement).filter(db_models.DBBehavioralEngagement.student_id == data.student_id).all()
     
-    # Wake up the AI to analyze it!
-    ai_intervention = run_ai_analysis(student_text)
+    # 3. --- NEW: BUILD THE ULTIMATE HOLISTIC PROMPT ---
+    ai_prompt = f"Recent update: Student ID {data.student_id} just scored {data.score}% on their {data.subject} {data.assessment_type}.\n\n"
+    ai_prompt += "Here is the student's complete academic and behavioral history for context:\n\n"
+    
+    ai_prompt += "ACADEMIC HISTORY:\n"
+    for record in past_academic:
+        ai_prompt += f"- {record.subject} ({record.assessment_type}): {record.score}%\n"
+        
+    ai_prompt += "\nBEHAVIORAL HISTORY:\n"
+    if past_behavior:
+        for record in past_behavior:
+            ai_prompt += f"- {record.activity_type}: Engagement Score {record.engagement_score}/10. Notes: {record.self_reflection_notes}\n"
+    else:
+        ai_prompt += "- No behavioral records found yet.\n"
+        
+    ai_prompt += "\nBased on this student's combined academic and behavioral history, please provide a holistic early risk intervention plan."
+    
+    # 4. --- THE AI TRIGGER ---
+    ai_intervention = run_ai_analysis(ai_prompt)
     
     return {
         "status": "success", 
         "message": f"Permanently saved {data.subject} score for student {data.student_id}",
-        "ai_analysis": ai_intervention # We return the AI's plan so you can see it!
+        "ai_analysis": ai_intervention 
     }
 
 @app.post("/api/v1/observe/behavior")
@@ -87,3 +107,36 @@ def record_behavioral_data(data: BehavioralEngagement, db: Session = Depends(get
         "message": f"Permanently saved {data.activity_type} engagement for student {data.student_id}",
         "ai_analysis": ai_intervention
     }
+# ==========================================
+# PHASE 2: GET ROUTE TO VIEW PAST RECORDS
+# ==========================================
+@app.get("/api/v1/students/{student_id}")
+def get_student_history(student_id: int, db: Session = Depends(get_db)):
+    """Fetch all academic records for a specific student."""
+    
+    # Updated to match the exact name used in your POST route!
+    records = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == student_id).all()
+    
+    if not records:
+        raise HTTPException(status_code=404, detail=f"No records found for Student ID {student_id}")
+    
+    return {
+        "status": "success", 
+        "student_id": student_id, 
+        "total_records": len(records),
+        "history": records
+    }
+# ==========================================
+# PHASE 3: CUSTOM ERROR HANDLING
+# ==========================================
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    """Catches bad data formats and returns a friendly error message."""
+    return JSONResponse(
+        status_code=422,
+        content={
+            "status": "error",
+            "message": "Oops! The data sent to the server is missing or in the wrong format. Please ensure IDs are numbers and text fields are not empty.",
+            "developer_details": exc.errors() # Keeps the exact error for debugging!
+        },
+    )

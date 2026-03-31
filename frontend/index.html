@@ -40,21 +40,33 @@
         <div id="ai_output">Loading analysis...</div>
     </div>
 </div>
+<div style="margin-top: 40px; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+    <h2>🔍 View Student History</h2>
+    <label for="searchStudentId"><strong>Enter Student ID:</strong></label><br>
+    <input type="number" id="searchStudentId" placeholder="e.g., 100" style="padding: 8px; margin-top: 5px; margin-bottom: 10px; width: 200px;">
+    <button onclick="fetchStudentHistory()" style="padding: 8px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Search History</button>
+
+    <div id="historyResults" style="margin-top: 20px; display: none;">
+        <h3>Academic Records</h3>
+        <ul id="historyList" style="list-style-type: none; padding-left: 0;"></ul>
+    </div>
+</div>
 
 <script>
-    // This JavaScript function talks to your FastAPI backend!
+    // ==========================================
+    // FUNCTION 1: SUBMIT NEW DATA & GET AI PLAN
+    // ==========================================
     async function submitData() {
         const studentId = document.getElementById("student_id").value;
         const subject = document.getElementById("subject").value;
         const score = document.getElementById("score").value;
         const assessmentType = document.getElementById("assessment_type").value;
         
-        // --- NEW CODE: THE VALIDATION BOUNCER ---
+        // --- THE VALIDATION BOUNCER ---
         if (!studentId || !subject || !score || !assessmentType) {
             alert("⚠️ Please fill in all 4 boxes before submitting!");
-            return; // Stops the function right here so no broken data is sent!
+            return; 
         }
-        // ----------------------------------------
 
         const resultBox = document.getElementById("result_container");
         const aiOutput = document.getElementById("ai_output");
@@ -80,7 +92,6 @@
             
             // Display the AI's response on the screen!
             if(data.status === "success") {
-                // If it succeeds, show the exact plan!
                 aiOutput.innerText = data.ai_analysis; 
             } else {
                 aiOutput.innerText = "Error saving data. Check terminal.";
@@ -89,7 +100,57 @@
             aiOutput.innerText = "Failed to connect to the backend. Is the FastAPI server running?";
         }
     }
-</script>
 
+    // ==========================================
+    // FUNCTION 2: SEARCH PAST STUDENT HISTORY
+    // ==========================================
+    async function fetchStudentHistory() {
+        const studentId = document.getElementById("searchStudentId").value;
+        const historyResultsDiv = document.getElementById("historyResults");
+        const historyList = document.getElementById("historyList");
+
+        if (!studentId) {
+            alert("Please enter a Student ID to search.");
+            return;
+        }
+
+        // Clear old results and show loading text
+        historyList.innerHTML = "<li>Loading...</li>";
+        historyResultsDiv.style.display = "block";
+
+        try {
+            // Call your amazing FastAPI GET route!
+            const response = await fetch(`http://127.0.0.1:8000/api/v1/students/${studentId}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                historyList.innerHTML = ""; // Clear loading text
+                
+                if (data.history.length === 0) {
+                    historyList.innerHTML = "<li>No academic records found for this student.</li>";
+                    return;
+                }
+
+                // Loop through the history and create a list item for each grade
+                data.history.forEach(record => {
+                    const li = document.createElement("li");
+                    li.style.background = "#fff";
+                    li.style.margin = "5px 0";
+                    li.style.padding = "10px";
+                    li.style.border = "1px solid #ddd";
+                    li.style.borderRadius = "4px";
+                    li.innerHTML = `<strong>${record.subject}</strong> (${record.assessment_type}): Score <strong>${record.score}%</strong>`;
+                    historyList.appendChild(li);
+                });
+            } else {
+                // If the backend sends an error (like our 404 Not Found if the student doesn't exist)
+                historyList.innerHTML = `<li style="color: red;">${data.detail || data.message}</li>`;
+            }
+        } catch (error) {
+            console.error("Error fetching history:", error);
+            historyList.innerHTML = `<li style="color: red;">Error connecting to the server. Is your backend running?</li>`;
+        }
+    }
+</script>
 </body>
 </html>

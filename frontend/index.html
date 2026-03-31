@@ -49,6 +49,13 @@
         const score = document.getElementById("score").value;
         const assessmentType = document.getElementById("assessment_type").value;
         
+        // --- NEW CODE: THE VALIDATION BOUNCER ---
+        if (!studentId || !subject || !score || !assessmentType) {
+            alert("⚠️ Please fill in all 4 boxes before submitting!");
+            return; // Stops the function right here so no broken data is sent!
+        }
+        // ----------------------------------------
+
         const resultBox = document.getElementById("result_container");
         const aiOutput = document.getElementById("ai_output");
 
@@ -73,7 +80,8 @@
             
             // Display the AI's response on the screen!
             if(data.status === "success") {
-                aiOutput.innerText = data.ai_analysis;
+                // If it succeeds, show the exact plan!
+                aiOutput.innerText = data.ai_analysis; 
             } else {
                 aiOutput.innerText = "Error saving data. Check terminal.";
             }

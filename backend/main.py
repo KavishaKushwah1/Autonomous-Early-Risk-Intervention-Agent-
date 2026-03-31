@@ -45,7 +45,7 @@ def read_root():
 
 @app.post("/api/v1/observe/academic")
 def record_academic_data(data: AcademicRecord, db: Session = Depends(get_db)):
-    # 1. Save the new grade to Database (Just like before)
+    # 1. Save the new grade to Database
     new_record = db_models.DBAcademicRecord(
         student_id=data.student_id,
         subject=data.subject,
@@ -55,42 +55,34 @@ def record_academic_data(data: AcademicRecord, db: Session = Depends(get_db)):
     db.add(new_record)
     db.commit()
     
-    # 2. --- NEW: FETCH THE STUDENT'S ENTIRE HISTORY ---
-    # We ask the database for every grade this student has ever received
-    past_records = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == data.student_id).all()
+    # 2. --- NEW: FETCH BOTH ACADEMIC AND BEHAVIORAL HISTORY ---
+    past_academic = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == data.student_id).all()
+    past_behavior = db.query(db_models.DBBehavioralEngagement).filter(db_models.DBBehavioralEngagement.student_id == data.student_id).all()
     
-    # 3. --- NEW: BUILD A HOLISTIC PROMPT FOR THE AI ---
-    # We construct a detailed report for the LangGraph agent to read
+    # 3. --- NEW: BUILD THE ULTIMATE HOLISTIC PROMPT ---
     ai_prompt = f"Recent update: Student ID {data.student_id} just scored {data.score}% on their {data.subject} {data.assessment_type}.\n\n"
-    ai_prompt += "Here is the student's complete academic history for context:\n"
+    ai_prompt += "Here is the student's complete academic and behavioral history for context:\n\n"
     
-    # Loop through their history and list it out for the AI
-    for record in past_records:
+    ai_prompt += "ACADEMIC HISTORY:\n"
+    for record in past_academic:
         ai_prompt += f"- {record.subject} ({record.assessment_type}): {record.score}%\n"
         
-    ai_prompt += "\nBased on this student's entire performance history, please provide a holistic early risk intervention plan."
+    ai_prompt += "\nBEHAVIORAL HISTORY:\n"
+    if past_behavior:
+        for record in past_behavior:
+            ai_prompt += f"- {record.activity_type}: Engagement Score {record.engagement_score}/10. Notes: {record.self_reflection_notes}\n"
+    else:
+        ai_prompt += "- No behavioral records found yet.\n"
+        
+    ai_prompt += "\nBased on this student's combined academic and behavioral history, please provide a holistic early risk intervention plan."
     
     # 4. --- THE AI TRIGGER ---
-    # We send the massive, detailed prompt to the AI instead of just one sentence!
     ai_intervention = run_ai_analysis(ai_prompt)
     
     return {
         "status": "success", 
         "message": f"Permanently saved {data.subject} score for student {data.student_id}",
         "ai_analysis": ai_intervention 
-    }
-    
-    # 2. --- THE AI TRIGGER ---
-    # We translate the raw data into a readable sentence for the AI
-    student_text = f"Student ID {data.student_id} just scored {data.score}% on their {data.subject} {data.assessment_type}."
-    
-    # Wake up the AI to analyze it!
-    ai_intervention = run_ai_analysis(student_text)
-    
-    return {
-        "status": "success", 
-        "message": f"Permanently saved {data.subject} score for student {data.student_id}",
-        "ai_analysis": ai_intervention # We return the AI's plan so you can see it!
     }
 
 @app.post("/api/v1/observe/behavior")

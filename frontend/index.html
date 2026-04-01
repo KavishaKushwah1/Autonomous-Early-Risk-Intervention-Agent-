@@ -47,8 +47,11 @@
     <button onclick="fetchStudentHistory()" style="padding: 8px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Search History</button>
 
     <div id="historyResults" style="margin-top: 20px; display: none;">
-        <h3>Academic Records</h3>
+        <h3>📚 Academic Records</h3>
         <ul id="historyList" style="list-style-type: none; padding-left: 0;"></ul>
+
+        <h3>🎭 Behavioral Records</h3>
+        <ul id="behaviorList" style="list-style-type: none; padding-left: 0;"></ul>
     </div>
 </div>
 
@@ -101,13 +104,14 @@
         }
     }
 
-    // ==========================================
+// ==========================================
     // FUNCTION 2: SEARCH PAST STUDENT HISTORY
     // ==========================================
     async function fetchStudentHistory() {
         const studentId = document.getElementById("searchStudentId").value;
         const historyResultsDiv = document.getElementById("historyResults");
         const historyList = document.getElementById("historyList");
+        const behaviorList = document.getElementById("behaviorList"); // NEW!
 
         if (!studentId) {
             alert("Please enter a Student ID to search.");
@@ -115,40 +119,58 @@
         }
 
         // Clear old results and show loading text
-        historyList.innerHTML = "<li>Loading...</li>";
+        historyList.innerHTML = "<li>Loading academic data...</li>";
+        behaviorList.innerHTML = "<li>Loading behavioral data...</li>";
         historyResultsDiv.style.display = "block";
 
         try {
-            // Call your amazing FastAPI GET route!
             const response = await fetch(`http://127.0.0.1:8000/api/v1/students/${studentId}`);
             const data = await response.json();
 
             if (response.ok) {
-                historyList.innerHTML = ""; // Clear loading text
+                historyList.innerHTML = ""; 
+                behaviorList.innerHTML = ""; 
                 
-                if (data.history.length === 0) {
-                    historyList.innerHTML = "<li>No academic records found for this student.</li>";
-                    return;
+                // --- Display Academic Records ---
+                if (data.academic_history.length === 0) {
+                    historyList.innerHTML = "<li>No academic records found.</li>";
+                } else {
+                    data.academic_history.forEach(record => {
+                        const li = document.createElement("li");
+                        li.style.background = "#fff";
+                        li.style.margin = "5px 0";
+                        li.style.padding = "10px";
+                        li.style.border = "1px solid #ddd";
+                        li.style.borderRadius = "4px";
+                        li.innerHTML = `<strong>${record.subject}</strong> (${record.assessment_type}): Score <strong>${record.score}%</strong>`;
+                        historyList.appendChild(li);
+                    });
                 }
 
-                // Loop through the history and create a list item for each grade
-                data.history.forEach(record => {
-                    const li = document.createElement("li");
-                    li.style.background = "#fff";
-                    li.style.margin = "5px 0";
-                    li.style.padding = "10px";
-                    li.style.border = "1px solid #ddd";
-                    li.style.borderRadius = "4px";
-                    li.innerHTML = `<strong>${record.subject}</strong> (${record.assessment_type}): Score <strong>${record.score}%</strong>`;
-                    historyList.appendChild(li);
-                });
+                // --- Display Behavioral Records ---
+                if (data.behavioral_history.length === 0) {
+                    behaviorList.innerHTML = "<li>No behavioral records found.</li>";
+                } else {
+                    data.behavioral_history.forEach(record => {
+                        const li = document.createElement("li");
+                        li.style.background = "#fff";
+                        li.style.margin = "5px 0";
+                        li.style.padding = "10px";
+                        li.style.border = "1px solid #ddd";
+                        li.style.borderRadius = "4px";
+                        li.innerHTML = `<strong>${record.activity_type}</strong> - Engagement Score: <strong>${record.engagement_score}/10</strong><br><span style="color: #555; font-size: 0.9em;">Notes: ${record.self_reflection_notes}</span>`;
+                        behaviorList.appendChild(li);
+                    });
+                }
+
             } else {
-                // If the backend sends an error (like our 404 Not Found if the student doesn't exist)
                 historyList.innerHTML = `<li style="color: red;">${data.detail || data.message}</li>`;
+                behaviorList.innerHTML = "";
             }
         } catch (error) {
             console.error("Error fetching history:", error);
             historyList.innerHTML = `<li style="color: red;">Error connecting to the server. Is your backend running?</li>`;
+            behaviorList.innerHTML = "";
         }
     }
 </script>

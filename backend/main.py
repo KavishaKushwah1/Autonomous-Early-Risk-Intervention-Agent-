@@ -112,19 +112,22 @@ def record_behavioral_data(data: BehavioralEngagement, db: Session = Depends(get
 # ==========================================
 @app.get("/api/v1/students/{student_id}")
 def get_student_history(student_id: int, db: Session = Depends(get_db)):
-    """Fetch all academic records for a specific student."""
+    """Fetch all academic AND behavioral records for a specific student."""
     
-    # Updated to match the exact name used in your POST route!
-    records = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == student_id).all()
+    # 1. Fetch both types of records from the database
+    academic_records = db.query(db_models.DBAcademicRecord).filter(db_models.DBAcademicRecord.student_id == student_id).all()
+    behavioral_records = db.query(db_models.DBBehavioralEngagement).filter(db_models.DBBehavioralEngagement.student_id == student_id).all()
     
-    if not records:
+    # 2. If the student doesn't exist in either table, throw an error
+    if not academic_records and not behavioral_records:
         raise HTTPException(status_code=404, detail=f"No records found for Student ID {student_id}")
     
+    # 3. Send both lists back in the JSON response
     return {
         "status": "success", 
         "student_id": student_id, 
-        "total_records": len(records),
-        "history": records
+        "academic_history": academic_records,
+        "behavioral_history": behavioral_records
     }
 # ==========================================
 # PHASE 3: CUSTOM ERROR HANDLING

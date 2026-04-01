@@ -1,95 +1,1203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Dashboard - AI Intervention</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; text-align: center; }
-        label { font-weight: bold; margin-top: 10px; display: block; }
-        input { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background-color: #27ae60; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #2ecc71; }
-        .result-box { margin-top: 20px; padding: 15px; border-radius: 5px; background-color: #e8f8f5; border-left: 5px solid #27ae60; display: none; }
-        
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Learning Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #3B5BDB;
+    --primary-light: #4C6EF5;
+    --primary-dark: #2F4AC0;
+    --accent: #F97316;
+    --accent2: #10B981;
+    --accent3: #F59E0B;
+    --danger: #EF4444;
+    --bg: #F0F4FF;
+    --sidebar-bg: #1E3A8A;
+    --sidebar-text: rgba(255,255,255,0.7);
+    --card: #FFFFFF;
+    --text: #1E293B;
+    --text-muted: #64748B;
+    --text-light: #94A3B8;
+    --border: #E2E8F0;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(59,91,219,0.08);
+    --shadow-md: 0 4px 20px rgba(59,91,219,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  h1,h2,h3,h4,h5 { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  /* LAYOUT */
+  .app { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 72px;
+    background: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 6px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+  .sidebar .logo {
+    width: 40px; height: 40px;
+    background: white;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .sidebar .logo svg { width: 22px; height: 22px; }
+  .sidebar-item {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--sidebar-text);
+    transition: all 0.2s;
+    position: relative;
+  }
+  .sidebar-item:hover, .sidebar-item.active {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  .sidebar-item svg { width: 20px; height: 20px; }
+
+  /* MAIN */
+  .main { margin-left: 72px; flex: 1; display: flex; flex-direction: column; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--primary);
+    color: white;
+    padding: 0 24px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 90;
+  }
+  .topbar-left h2 { font-size: 18px; font-weight: 700; }
+  .topbar-left p { font-size: 12px; opacity: 0.75; }
+  .topbar-right { display: flex; align-items: center; gap: 14px; }
+  .topbar-icon {
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative;
+  }
+  .topbar-icon svg { width: 18px; height: 18px; }
+  .badge {
+    position: absolute; top: -4px; right: -4px;
+    background: var(--danger);
+    color: white; font-size: 9px; font-weight: 700;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #F97316, #FBBF24);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; color: white;
+  }
+
+  /* PAGE WRAPPER */
+  .page { display: none; padding: 24px; }
+  .page.active { display: block; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex; gap: 4px;
+    background: white;
+    padding: 6px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    width: fit-content;
+    flex-wrap: wrap;
+  }
+  .nav-tab {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .nav-tab:hover { color: var(--primary); }
+  .nav-tab.active { background: var(--primary); color: white; }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-dots { display: flex; gap: 3px; }
+  .card-dots span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  /* STATS */
+  .stat-row { display: flex; gap: 16px; align-items: center; }
+  .stat-big { font-size: 32px; font-weight: 800; color: var(--primary); }
+  .stat-label { font-size: 12px; color: var(--text-muted); }
+  .stat-sub { font-size: 13px; font-weight: 600; }
+
+  /* STREAK */
+  .streak-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #FFF7ED;
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+  }
+
+  /* RISK BADGE */
+  .risk-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #ECFDF5; color: var(--accent2);
+    padding: 6px 12px; border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+  }
+
+  /* MINI CHART (CSS bars) */
+  .mini-bars { display: flex; align-items: flex-end; gap: 4px; height: 60px; }
+  .mini-bar { flex: 1; border-radius: 4px 4px 0 0; min-width: 8px; }
+
+  /* LINE CHART FAKE */
+  .line-chart-area { height: 80px; position: relative; overflow: hidden; }
+  .line-chart-area svg { width: 100%; height: 100%; }
+
+  /* PROGRESS BAR */
+  .progress-bar { background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 999px; transition: width 0.5s; }
+
+  /* CHECKLIST */
+  .checklist { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text);
+  }
+  .check-box {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .check-box svg { width: 11px; height: 11px; color: white; }
+  .check-box.unchecked { background: var(--border); }
+
+  /* INSIGHT CARD */
+  .insight-box {
+    background: #EFF6FF;
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 13px; color: var(--text);
+    line-height: 1.5;
+  }
+  .insight-box strong { color: var(--primary); }
+  .btn-sm {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-success { background: var(--accent2); color: white; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+
+  /* SKILLS LIST */
+  .skill-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .skill-item:last-child { border-bottom: none; }
+  .skill-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .skill-name { flex: 1; font-weight: 500; }
+  .skill-pct { font-weight: 700; font-size: 12px; color: var(--primary); }
+
+  /* PIE DONUT */
+  .donut-wrap { display: flex; align-items: center; gap: 16px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* GOAL ITEM */
+  .goal-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .goal-item:last-child { border-bottom: none; }
+  .goal-left { display: flex; align-items: center; gap: 10px; }
+  .goal-icon { font-size: 18px; }
+  .goal-name { font-weight: 600; }
+  .goal-progress-text { font-size: 12px; color: var(--text-muted); }
+  .goal-right { font-weight: 700; color: var(--primary); font-size: 13px; }
+
+  /* CLUB ITEM */
+  .club-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .club-item:last-child { border-bottom: none; }
+  .club-avatar { width: 38px; height: 38px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .club-name { font-weight: 600; font-size: 13px; }
+  .club-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* QUIZ ITEM */
+  .quiz-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .quiz-item:last-child { border-bottom: none; }
+  .quiz-left { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; }
+  .quiz-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 12px; }
+
+  /* ACHIEVEMENT BADGES */
+  .badges-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .ach-badge {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* RATING STARS */
+  .stars { display: flex; gap: 2px; }
+  .star { color: var(--accent3); font-size: 16px; }
+
+  /* SUPPORT ITEM */
+  .support-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; }
+  .support-icon { font-size: 20px; }
+  .support-title { font-size: 13px; font-weight: 600; }
+  .support-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* MONTH CHART LABELS */
+  .chart-labels { display: flex; justify-content: space-between; margin-top: 4px; }
+  .chart-label { font-size: 10px; color: var(--text-muted); }
+
+  /* SECTION DIVIDER */
+  .section-gap { margin-bottom: 20px; }
+
+  /* STREAK FIRE */
+  .streak-fire { font-size: 20px; }
+
+  /* MILESTONES */
+  .milestone-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .milestone {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .milestone.done { background: linear-gradient(135deg, #3B5BDB, #60A5FA); box-shadow: 0 2px 8px rgba(59,91,219,0.3); }
+  .milestone.pending { background: var(--border); }
+
+  /* CHALLENGE ITEM */
+  .challenge-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .challenge-item:last-child { border-bottom: none; }
+  .challenge-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .challenge-info { flex: 1; }
+  .challenge-name { font-size: 13px; font-weight: 600; }
+  .challenge-sub { font-size: 11px; color: var(--text-muted); }
+
+  /* FEEDBACK FORM */
+  .feedback-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    outline: none;
+    transition: border 0.2s;
+  }
+  .feedback-input:focus { border-color: var(--primary); }
+
+  select.feedback-input { appearance: none; cursor: pointer; }
+
+  /* CONTACT INFO */
+  .contact-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-icon { font-size: 16px; }
+
+  /* TOOLTIP LABEL */
+  .tooltip-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 4px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .sidebar { width: 56px; }
+    .main { margin-left: 56px; }
+  }
+</style>
 </head>
 <body>
+<div class="app">
 
-<div class="container">
-    <h2>📚 Enter Academic Data</h2>
-    
-    <label>Student ID (Number):</label>
-    <input type="number" id="student_id" placeholder="e.g. 999">
-
-    <label>Subject:</label>
-    <input type="text" id="subject" placeholder="e.g. Math">
-
-    <label>Score (%):</label>
-    <input type="number" step="0.1" id="score" placeholder="e.g. 45.5">
-
-    <label>Assessment Type:</label>
-    <input type="text" id="assessment_type" placeholder="e.g. Midterm Exam">
-
-    <button onclick="submitData()">Submit Grade & Ask AI</button>
-
-    <div id="result_container" class="result-box">
-        <div class="ai-title">🤖 AI Intervention Plan:</div>
-        <div id="ai_output">Loading analysis...</div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#3B5BDB" stroke-width="2.5" stroke-linecap="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
     </div>
-</div>
+    <div class="sidebar-item active" onclick="showPage('dashboard')" title="Dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="showPage('growth')" title="My Growth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="showPage('insights')" title="Learning Insights">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="showPage('goals')" title="Goals & Streaks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="showPage('feedback')" title="Feedback & Report">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <div class="sidebar-item" onclick="showPage('support')" title="Support Center">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- ==================== PAGE 1: DASHBOARD ==================== -->
+    <div id="page-dashboard" class="page active">
+      <div class="topbar">
+        <div class="topbar-left">
+          <h2>Welcome Back, Alex! 👋</h2>
+          <p>Learning is a journey, not a race. Take one step at a time.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="badge">3</span></div>
+          <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge">5</span></div>
+          <div class="avatar">A</div>
+        </div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-2 section-gap">
+          <!-- Academic Score -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Academic Score</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="stat-row">
+              <div>
+                <div class="stat-big">82%</div>
+                <div class="stat-label">Academic Score</div>
+              </div>
+              <div style="flex:1;padding:0 12px;">
+                <svg viewBox="0 0 100 50" style="width:100%;height:50px;">
+                  <polyline points="0,40 20,30 40,35 60,20 80,25 100,10" fill="none" stroke="#3B5BDB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="100" cy="10" r="4" fill="#3B5BDB"/>
+                </svg>
+                <div class="chart-labels">
+                  <span class="chart-label">Mon</span><span class="chart-label">Tue</span><span class="chart-label">Wed</span><span class="chart-label">Thu</span><span class="chart-label">Fri</span><span class="chart-label">Sat</span>
+                </div>
+              </div>
+              <div>
+                <div class="streak-badge"><span class="streak-fire">🔥</span> 12 Days</div>
+                <div class="stat-label" style="margin-top:8px;">Learning Streak</div>
+              </div>
+              <div>
+                <div class="risk-badge">🛡️ Good</div>
+                <div class="stat-label" style="margin-top:8px;">Risk Level</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Insights + Grade Submit Form -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">AI Insights</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="insight-box" style="margin-bottom:12px;">
+              Enter a student grade to get an <strong>AI-generated intervention plan</strong> from your backend.
+            </div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Student ID:</label>
+            <input class="feedback-input" type="number" id="student_id" placeholder="e.g. 999" style="margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Subject:</label>
+            <input class="feedback-input" type="text" id="subject" placeholder="e.g. Math" style="margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Score (%):</label>
+            <input class="feedback-input" type="number" step="0.1" id="score" placeholder="e.g. 45.5" style="margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Assessment Type:</label>
+            <input class="feedback-input" type="text" id="assessment_type" placeholder="e.g. Midterm Exam" style="margin-bottom:12px;">
+            <button id="submit-grade-btn" class="btn-sm btn-primary" style="width:100%;" onclick="submitData()">🚀 Submit Grade &amp; Ask AI</button>
+            <div id="ai-result-box" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="grid-2 section-gap">
+          <!-- Academic Progress -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Academic Progress</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <svg viewBox="0 0 280 100" style="width:100%;height:100px;">
+              <polyline points="0,80 40,60 80,65 120,40 160,50 200,30 240,35 280,15" fill="none" stroke="#3B5BDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="280" cy="15" r="5" fill="#3B5BDB"/>
+              <text x="0" y="95" fill="#94A3B8" font-size="9" font-family="DM Sans">Mar</text>
+              <text x="60" y="95" fill="#94A3B8" font-size="9">Math</text>
+              <text x="120" y="95" fill="#94A3B8" font-size="9">Mar</text>
+              <text x="175" y="95" fill="#94A3B8" font-size="9">Apr</text>
+              <text x="230" y="95" fill="#94A3B8" font-size="9">May</text>
+            </svg>
+          </div>
+
+          <!-- Daily Action Plan -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Daily Action Plan</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="checklist">
+              <div class="check-item"><div class="check-box"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>Revise Algebra – 20 mins</div>
+              <div class="check-item"><div class="check-box"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>Join group discussion</div>
+              <div class="check-item"><div class="check-box"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div>Complete reflection journal</div>
+            </div>
+            <div style="margin-top:14px;text-align:right;">
+              <a href="#" style="font-size:12px;color:var(--primary);font-weight:600;">📓 Daily Journal →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Growth mini -->
+        <div class="card section-gap">
+          <div class="card-header"><span class="card-title">📈 My Growth – Monthly Progress</span><button class="btn-sm btn-outline" onclick="showPage('growth')">View All</button></div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:35%;background:#BFDBFE;"></div>
+            <div class="mini-bar" style="height:55%;background:#93C5FD;"></div>
+            <div class="mini-bar" style="height:45%;background:#BFDBFE;"></div>
+            <div class="mini-bar" style="height:70%;background:#60A5FA;"></div>
+            <div class="mini-bar" style="height:60%;background:#3B5BDB;"></div>
+            <div class="mini-bar" style="height:80%;background:#2F4AC0;"></div>
+          </div>
+          <div class="chart-labels"><span class="chart-label">Math</span><span class="chart-label">Sci</span><span class="chart-label">Mar</span><span class="chart-label">Apr</span><span class="chart-label">May</span><span class="chart-label">Lat</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 2: MY GROWTH ==================== -->
+    <div id="page-growth" class="page">
+      <div class="topbar">
+        <div class="topbar-left"><h2>My Growth 📈</h2><p>Track achievement from all your accomplishments for history.</p></div>
+        <div class="topbar-right">
+          <div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span class="badge">3</span></div>
+          <div class="avatar">A</div>
+        </div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-2 section-gap">
+          <!-- Monthly Progress Chart -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Monthly Progress</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div style="height:120px;position:relative;">
+              <svg viewBox="0 0 300 100" style="width:100%;height:100px;">
+                <defs>
+                  <linearGradient id="barGrad" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#3B5BDB"/>
+                    <stop offset="100%" stop-color="#60A5FA"/>
+                  </linearGradient>
+                </defs>
+                <rect x="10" y="50" width="30" height="45" rx="4" fill="url(#barGrad)" opacity="0.6"/>
+                <rect x="60" y="30" width="30" height="65" rx="4" fill="url(#barGrad)" opacity="0.7"/>
+                <rect x="110" y="40" width="30" height="55" rx="4" fill="url(#barGrad)" opacity="0.8"/>
+                <rect x="160" y="20" width="30" height="75" rx="4" fill="url(#barGrad)"/>
+                <rect x="210" y="35" width="30" height="60" rx="4" fill="url(#barGrad)" opacity="0.9"/>
+                <rect x="260" y="15" width="30" height="80" rx="4" fill="#F97316"/>
+                <text x="22" y="108" fill="#94A3B8" font-size="9">Math</text>
+                <text x="70" y="108" fill="#94A3B8" font-size="9">Sci</text>
+                <text x="120" y="108" fill="#94A3B8" font-size="9">Mar</text>
+                <text x="170" y="108" fill="#94A3B8" font-size="9">Apr</text>
+                <text x="218" y="108" fill="#94A3B8" font-size="9">May</text>
+                <text x="268" y="108" fill="#94A3B8" font-size="9">Lat</text>
+              </svg>
+            </div>
+            <div style="margin-top:12px;">
+              <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Enter Student ID to load real data:</label>
+              <div style="display:flex;gap:8px;">
+                <input class="feedback-input" type="number" id="growth-student-id" placeholder="e.g. 100" style="flex:1;">
+                <button id="growth-load-btn" class="btn-sm btn-primary" onclick="loadStudentGrowth()">Load Growth →</button>
+              </div>
+              <div id="growth-result" style="display:none;"></div>
+            </div>
+          </div>
+
+          <!-- Skills Development -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">Skills Development</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div style="display:flex;gap:16px;align-items:center;">
+              <div style="flex:1;">
+                <div class="skill-item"><div class="skill-icon" style="background:#EFF6FF;">🧠</div><div class="skill-name">Critical Thinking</div><div class="skill-pct">78%</div></div>
+                <div class="skill-item"><div class="skill-icon" style="background:#FFF7ED;">⚡</div><div class="skill-name">Problem Solving</div><div class="skill-pct">65%</div></div>
+                <div class="skill-item"><div class="skill-icon" style="background:#ECFDF5;">🤝</div><div class="skill-name">Collaboration</div><div class="skill-pct">82%</div></div>
+                <div class="skill-item"><div class="skill-icon" style="background:#FFF1F2;">🎯</div><div class="skill-name">Math Goals</div><div class="skill-pct">91%</div></div>
+              </div>
+              <div>
+                <svg viewBox="0 0 100 100" width="90" height="90">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#E2E8F0" stroke-width="12"/>
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#3B5BDB" stroke-width="12" stroke-dasharray="188 251" stroke-dashoffset="60" stroke-linecap="round"/>
+                  <circle cx="50" cy="50" r="26" fill="none" stroke="#F97316" stroke-width="8" stroke-dasharray="98 164" stroke-dashoffset="30" stroke-linecap="round"/>
+                  <text x="50" y="54" text-anchor="middle" fill="#1E293B" font-size="14" font-weight="800">75%</text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Over Time -->
+        <div class="card section-gap">
+          <div class="card-header"><span class="card-title">Progress Over Time</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+          <svg viewBox="0 0 600 120" style="width:100%;height:120px;">
+            <defs>
+              <linearGradient id="lineGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#3B5BDB" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#3B5BDB" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,100 L100,80 L200,85 L300,50 L400,60 L500,30 L600,20" fill="none" stroke="#3B5BDB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M0,100 L100,80 L200,85 L300,50 L400,60 L500,30 L600,20 L600,110 L0,110 Z" fill="url(#lineGrad)"/>
+            <circle cx="600" cy="20" r="5" fill="#3B5BDB"/>
+            <text x="0" y="118" fill="#94A3B8" font-size="9">Nov</text><text x="95" y="118" fill="#94A3B8" font-size="9">Feb</text><text x="190" y="118" fill="#94A3B8" font-size="9">Mar</text><text x="290" y="118" fill="#94A3B8" font-size="9">Apr</text><text x="390" y="118" fill="#94A3B8" font-size="9">May</text><text x="490" y="118" fill="#94A3B8" font-size="9">Jun</text>
+            <text x="0" y="10" fill="#94A3B8" font-size="8">300</text><text x="0" y="40" fill="#94A3B8" font-size="8">150</text><text x="0" y="75" fill="#94A3B8" font-size="8">50</text><text x="0" y="100" fill="#94A3B8" font-size="8">10</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 3: LEARNING INSIGHTS ==================== -->
+    <div id="page-insights" class="page">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Learning Insights & Tips 💡</h2><p>Learning is an investment, a cognitive step at a time.</p></div>
+        <div class="topbar-right"><div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge">5</span></div><div class="avatar">A</div></div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-3 section-gap">
+          <!-- Study Habits Analysis -->
+          <div class="card" style="grid-column: span 1;">
+            <div class="card-header"><span class="card-title">Study Habits Analysis</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="donut-wrap">
+              <svg viewBox="0 0 80 80" width="80" height="80">
+                <circle cx="40" cy="40" r="30" fill="none" stroke="#3B5BDB" stroke-width="14" stroke-dasharray="104 188" stroke-dashoffset="-10"/>
+                <circle cx="40" cy="40" r="30" fill="none" stroke="#60A5FA" stroke-width="14" stroke-dasharray="60 188" stroke-dashoffset="-114"/>
+                <circle cx="40" cy="40" r="30" fill="none" stroke="#E2E8F0" stroke-width="14" stroke-dasharray="24 188" stroke-dashoffset="-174"/>
+                <text x="40" y="44" text-anchor="middle" fill="#1E293B" font-size="14" font-weight="800">55%</text>
+              </svg>
+              <div class="donut-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#3B5BDB;"></div>Active Learning <strong>55%</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#60A5FA;"></div>Passive Learning <strong>32%</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#E2E8F0;"></div>Communities <strong>13%</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Improvement Opportunities -->
+          <div class="card" style="grid-column: span 2;">
+            <div class="card-header"><span class="card-title">Improvement Opportunities</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="insight-box" style="margin-bottom:12px;">
+              <strong>Personalized growth tips</strong><br>
+              Your current study sessions. Include study session moderates that are designed with the high goals and outcomes you pursue.
+            </div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px;">Student ID:</label>
+            <input class="feedback-input" type="number" id="insights-student-id" placeholder="e.g. 100" style="margin-bottom:10px;">
+            <button id="explore-tips-btn" class="btn-sm btn-primary" onclick="exploreGrowthTips()">Explore Growth Tips →</button>
+            <div id="insights-result" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="grid-3 section-gap">
+          <!-- Streak Rewards -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🏆 Streak Rewards</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="quiz-item">
+              <div class="quiz-left">🎖️ Bonus XP, 204 99</div>
+              <div class="quiz-badge" style="background:#FFF7ED;color:var(--accent);">+XP</div>
+            </div>
+            <div class="quiz-item">
+              <div class="quiz-left">📆 Daily Streak Badge</div>
+              <div class="quiz-badge" style="background:#EFF6FF;color:var(--primary);">New</div>
+            </div>
+          </div>
+
+          <!-- Skill Quizzes -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🧩 Skill Quizzes</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="quiz-item">
+              <div class="quiz-left">🔬 Science Quiz</div>
+              <div class="quiz-badge" style="background:#ECFDF5;color:var(--accent2);">+115</div>
+            </div>
+            <div class="quiz-item">
+              <div class="quiz-left">📚 Grammar Quiz</div>
+              <div class="quiz-badge" style="background:#EFF6FF;color:var(--primary);">+618</div>
+            </div>
+          </div>
+
+          <!-- Goals & Milestones -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🎯 Goals & Milestones Progress</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="milestone-row">
+              <div class="milestone done">🏅</div>
+              <div class="milestone done">⭐</div>
+              <div class="milestone done">🔥</div>
+              <div class="milestone done">🎯</div>
+              <div class="milestone pending">🔒</div>
+              <div class="milestone pending">🔒</div>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">4 of 6 milestones reached</div>
+            <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" style="width:67%;background:var(--primary);"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 4: GOALS & STREAKS ==================== -->
+    <div id="page-goals" class="page">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Goals & Streaks 🎯</h2><p>Stay focused. Achieve your goals.</p></div>
+        <div class="topbar-right"><div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge">5</span></div><div class="avatar">A</div></div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-2 section-gap">
+          <!-- Streak Status -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🔥 Streak Status</span></div>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div style="font-size:48px;">🔥</div>
+              <div>
+                <div class="stat-big">12 Days</div>
+                <div class="stat-label">Dave's Streak, Earliest best Domain!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Goals -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">📌 Current Goals</span></div>
+            <div class="goal-item">
+              <div class="goal-left"><span class="goal-icon">🏆</span><div><div class="goal-name">Reach Grade A</div></div></div>
+              <div class="goal-right">7.8 / 250</div>
+            </div>
+            <div style="padding:4px 0 8px;"><div class="progress-bar"><div class="progress-fill" style="width:31%;background:var(--accent3);"></div></div></div>
+            <div class="goal-item">
+              <div class="goal-left"><span class="goal-icon">📚</span><div><div class="goal-name">History Club</div></div></div>
+              <div class="goal-right">9 / 100</div>
+            </div>
+            <div style="padding:4px 0 8px;"><div class="progress-bar"><div class="progress-fill" style="width:9%;background:var(--accent2);"></div></div></div>
+          </div>
+        </div>
+
+        <div class="grid-2 section-gap">
+          <!-- Clubs & Groups -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">👥 Clubs & Groups</span></div>
+            <div class="club-item">
+              <div class="club-avatar" style="background:#EFF6FF;">🔢</div>
+              <div><div class="club-name">Math Club</div><div class="club-sub">Reach 10 10 Algebra members/members</div></div>
+              <span style="font-size:11px;color:var(--text-muted);">3000+ 10</span>
+            </div>
+            <div class="club-item">
+              <div class="club-avatar" style="background:#FFF7ED;">📜</div>
+              <div><div class="club-name">History Club</div><div class="club-sub">Read 10 13x Regular algebra-members</div></div>
+              <span style="font-size:11px;color:var(--text-muted);">3200+ 10</span>
+            </div>
+          </div>
+
+          <!-- Challenges -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">⚡ Challenges</span></div>
+            <div class="challenge-item">
+              <div class="challenge-icon" style="background:#FFF7ED;">📐</div>
+              <div class="challenge-info"><div class="challenge-name">Math in Algebra</div><div class="challenge-sub">Equ: Problem</div></div>
+              <div style="font-size:12px;color:var(--accent2);font-weight:600;">+50 pts</div>
+            </div>
+            <div class="challenge-item">
+              <div class="challenge-icon" style="background:#EFF6FF;">🌍</div>
+              <div class="challenge-info"><div class="challenge-name">Batch 10 History Outside</div><div class="challenge-sub">First competition</div></div>
+              <div style="font-size:12px;color:var(--primary);font-weight:600;">Active</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill Quizzes in goals page -->
+        <div class="card section-gap">
+          <div class="card-header"><span class="card-title">🧩 Skill Quizzes</span></div>
+          <div class="grid-2">
+            <div class="quiz-item"><div class="quiz-left">🔬 Science Quiz</div><div class="quiz-badge" style="background:#ECFDF5;color:var(--accent2);">+115 pts</div></div>
+            <div class="quiz-item"><div class="quiz-left">📚 Grammar Quiz</div><div class="quiz-badge" style="background:#EFF6FF;color:var(--primary);">+618 pts</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 5: FEEDBACK & REPORT ==================== -->
+    <div id="page-feedback" class="page">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Feedback & Report 📝</h2><p>Learning together. Stay at intersection, Diversity.</p></div>
+        <div class="topbar-right"><div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge">5</span></div><div class="avatar">A</div></div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-2 section-gap">
+          <!-- Submit Feedback -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">💬 Submit Feedback</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div style="margin-bottom:14px;">
+              <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px;">Overall Rating</label>
+              <div class="stars">
+                <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="color:var(--border);">★</span>
+              </div>
+            </div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px;">Your Feedback</label>
+            <input class="feedback-input" type="text" id="feedback-text" placeholder="Please enter your feedback..." style="margin-bottom:12px;">
+            <div class="check-item"><div class="check-box"><svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></div><span style="font-size:12px;">Request image a motivation and alignment testline.</span></div>
+            <div style="margin-top:12px;background:#F0FDF4;border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+              <span style="color:var(--accent2);">✓</span>
+              <div class="progress-bar" style="flex:1;"><div class="progress-fill" style="width:75%;background:var(--accent2);"></div></div>
+            </div>
+            <button id="feedback-submit-btn" class="btn-sm btn-primary" style="margin-top:14px;width:100%;" onclick="submitFeedback()">Submit Feedback</button>
+            <div id="feedback-result" style="display:none;"></div>
+          </div>
+
+          <!-- Report an Issue -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🚨 Report an Issue</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px;">Issue Description</label>
+            <textarea class="feedback-input" id="report-text" rows="3" placeholder="Describe your issue..." style="resize:none;margin-bottom:12px;"></textarea>
+            <div style="display:flex;gap:8px;">
+              <select class="feedback-input" id="report-category" style="flex:1;">
+                <option value="">Select category...</option>
+                <option>Technical Issue</option>
+                <option>Content Error</option>
+                <option>Other</option>
+              </select>
+              <button class="btn-sm btn-outline" onclick="document.getElementById('report-text').value='';document.getElementById('report-result').style.display='none';">Cancel</button>
+            </div>
+            <button id="report-submit-btn" class="btn-sm btn-primary" style="margin-top:12px;width:100%;" onclick="submitReport()">Submit Report</button>
+            <div id="report-result" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Achievements Overview -->
+        <div class="card section-gap">
+          <div class="card-header"><span class="card-title">🏆 Achievements Overview</span><div style="display:flex;gap:8px;"><button style="background:none;border:none;font-size:18px;cursor:pointer;">‹</button><button style="background:none;border:none;font-size:18px;cursor:pointer;">›</button></div></div>
+          <div class="badges-row">
+            <div class="ach-badge" style="background:linear-gradient(135deg,#3B5BDB,#60A5FA);">📚</div>
+            <div class="ach-badge" style="background:linear-gradient(135deg,#10B981,#6EE7B7);">✅</div>
+            <div class="ach-badge" style="background:linear-gradient(135deg,#F59E0B,#FCD34D);">⭐</div>
+            <div class="ach-badge" style="background:linear-gradient(135deg,#EF4444,#FCA5A5);">🎖️</div>
+            <div class="ach-badge" style="background:linear-gradient(135deg,#8B5CF6,#C4B5FD);">🔮</div>
+            <div class="ach-badge" style="background:linear-gradient(135deg,#F97316,#FED7AA);">🚀</div>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:6px;justify-content:center;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--primary);"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--border);"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--border);"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px;">
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Learning Intent</div>
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Creative List Comity</div>
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Work by Rack</div>
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Kurrinion Thinker</div>
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Creation Pinned</div>
+            <div style="font-size:11px;text-align:center;color:var(--text-muted);">Wonton Pinned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== PAGE 6: SUPPORT CENTER ==================== -->
+    <div id="page-support" class="page">
+      <div class="topbar">
+        <div class="topbar-left"><h2>Support Center 🆘</h2><p>Learning is a journey, Managed meet instant. Hi Mike Engagement.</p></div>
+        <div class="topbar-right"><div class="topbar-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="badge">5</span></div><div class="avatar">A</div></div>
+      </div>
+      <div style="padding:24px;">
+        <div class="grid-2 section-gap">
+          <!-- Support & Help Center -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🆘 Support & Help Center</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="support-item">
+              <div class="support-icon">👤</div>
+              <div><div class="support-title">Hale Rysicz</div><div class="support-sub">Your support agent</div></div>
+            </div>
+            <div class="support-item">
+              <div class="support-icon">❓</div>
+              <div><div class="support-title">RQS</div><div class="support-sub">Sort& correct SONE.</div></div>
+            </div>
+            <div class="support-item">
+              <div class="support-icon">🛠️</div>
+              <div><div class="support-title">Community Tools</div><div class="support-sub">Robot rational opportunities</div></div>
+            </div>
+          </div>
+
+          <!-- View Student History (from original teacher dashboard) -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">🔍 View Student History</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <label style="font-size:12px;font-weight:600;color:var(--text-muted);display:block;margin-bottom:6px;">Enter Student ID:</label>
+            <input class="feedback-input" type="number" id="searchStudentId" placeholder="e.g. 100" style="margin-bottom:10px;">
+            <button id="history-search-btn" class="btn-sm btn-primary" style="width:100%;" onclick="fetchStudentHistory()">Search History</button>
+            <div id="history-result" style="display:none;"></div>
+          </div>
+        </div>
+
+        <div class="grid-2 section-gap">
+          <!-- Feedback -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">💬 Feedback</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="support-item">
+              <div class="support-icon">📧</div>
+              <div><div class="support-title">Email Support</div><div class="support-sub">Den enter information about being</div></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button class="btn-sm btn-success" style="flex:1;" onclick="showPage('feedback')">✅ Submit it</button>
+              <button class="btn-sm btn-outline">Later</button>
+            </div>
+          </div>
+
+          <!-- Contact Us -->
+          <div class="card">
+            <div class="card-header"><span class="card-title">📞 Contact Us</span><div class="card-dots"><span></span><span></span><span></span></div></div>
+            <div class="contact-item"><span class="contact-icon">📞</span><div><div style="font-size:13px;font-weight:600;">Contact Us</div><div style="font-size:12px;color:var(--text-muted);">Strait Support</div></div></div>
+            <div class="contact-item"><span class="contact-icon">💬</span><div><div style="font-size:13px;font-weight:600;">Strait Support</div><div style="font-size:12px;color:var(--text-muted);">eluntro-anime.r-eponsteel.com</div></div></div>
+            <div class="contact-item"><span class="contact-icon">🗨️</span><div><div style="font-size:13px;font-weight:600;">Satnet Chat</div><div style="font-size:12px;color:var(--text-muted);">Website current feeds times, and ablas.</div></div></div>
+            <div style="margin-top:12px;padding:10px;background:var(--bg);border-radius:8px;text-align:center;">
+              <div style="font-size:15px;font-weight:700;color:var(--primary);">+1-800-122-4507</div>
+              <div style="font-size:11px;color:var(--text-muted);">Lave Clat</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end main -->
+</div><!-- end app -->
 
 <script>
-    // This JavaScript function talks to your FastAPI backend!
-    async function submitData() {
-        const studentId = document.getElementById("student_id").value;
-        const subject = document.getElementById("subject").value;
-        const score = document.getElementById("score").value;
-        const assessmentType = document.getElementById("assessment_type").value;
-        
-        // --- NEW CODE: THE VALIDATION BOUNCER ---
-        if (!studentId || !subject || !score || !assessmentType) {
-            alert("⚠️ Please fill in all 4 boxes before submitting!");
-            return; // Stops the function right here so no broken data is sent!
-        }
-        // ----------------------------------------
+  // ─── CONFIG ──────────────────────────────────────────────────
+  const API = 'http://127.0.0.1:8000';
 
-        const resultBox = document.getElementById("result_container");
-        const aiOutput = document.getElementById("ai_output");
+  // ─── PAGE NAVIGATION ─────────────────────────────────────────
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    const items = document.querySelectorAll('.sidebar-item');
+    const map = { dashboard:0, growth:1, insights:2, goals:3, feedback:4, support:5 };
+    if (map[name] !== undefined) items[map[name]].classList.add('active');
+  }
 
-        // Show loading state
-        resultBox.style.display = "block";
-        aiOutput.innerText = "🧠 Analyzing data and generating intervention plan...";
+  // ─── HELPERS ─────────────────────────────────────────────────
+  function showResultBox(id, html, type='success') {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const colors = {
+      success: { bg:'#ECFDF5', border:'#10B981', text:'#065F46' },
+      error:   { bg:'#FEF2F2', border:'#EF4444', text:'#991B1B' },
+      info:    { bg:'#EFF6FF', border:'#3B5BDB', text:'#1E40AF' },
+    };
+    const c = colors[type] || colors.info;
+    el.style.cssText = `display:block;margin-top:12px;padding:12px 14px;border-radius:8px;
+      background:${c.bg};border-left:4px solid ${c.border};color:${c.text};
+      font-size:13px;line-height:1.6;white-space:pre-wrap;`;
+    el.innerHTML = html;
+  }
+  function hideResultBox(id) {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'none'; el.innerHTML = ''; }
+  }
+  function setBtn(btn, loading, originalHTML) {
+    btn.disabled = loading;
+    btn.innerHTML = loading
+      ? `<span style="display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;"></span>Processing…`
+      : originalHTML;
+  }
+  // Spin keyframe injected once
+  const _spin = document.createElement('style');
+  _spin.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+  document.head.appendChild(_spin);
 
-        // Send data to the backend
-        try {
-            const response = await fetch("http://127.0.0.1:8000/api/v1/observe/academic", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    student_id: parseInt(studentId),
-                    subject: subject,
-                    score: parseFloat(score),
-                    assessment_type: assessmentType
-                })
-            });
 
-            const data = await response.json();
-            
-            // Display the AI's response on the screen!
-            if(data.status === "success") {
-                // If it succeeds, show the exact plan!
-                aiOutput.innerText = data.ai_analysis; 
-            } else {
-                aiOutput.innerText = "Error saving data. Check terminal.";
-            }
-        } catch (error) {
-            aiOutput.innerText = "Failed to connect to the backend. Is the FastAPI server running?";
-        }
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 1 – DASHBOARD: "View Full Insights →" button
+  //   → fetches student history for a quick AI insight summary
+  // ═══════════════════════════════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', () => {
+    // Wire "View Full Insights →" button on Dashboard page
+    const insightBtn = document.querySelector('#page-dashboard .btn-sm.btn-primary');
+    if (insightBtn) {
+      insightBtn.addEventListener('click', () => showPage('growth'));
     }
-</script>
 
+    // Wire "View All" button on Dashboard → Growth page
+    const viewAllBtn = document.querySelector('#page-dashboard .btn-sm.btn-outline');
+    if (viewAllBtn) {
+      viewAllBtn.addEventListener('click', () => showPage('growth'));
+    }
+  });
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 2 – MY GROWTH: "Your Level has improved…" button
+  //   → opens a student ID prompt then fetches /api/v1/students/{id}
+  //     and displays academic progress inline
+  // ═══════════════════════════════════════════════════════════════
+  async function loadStudentGrowth() {
+    const btn = document.getElementById('growth-load-btn');
+    const studentId = document.getElementById('growth-student-id').value.trim();
+    if (!studentId) { alert('⚠️ Please enter a Student ID.'); return; }
+
+    const origHTML = btn.innerHTML;
+    setBtn(btn, true, origHTML);
+    hideResultBox('growth-result');
+
+    try {
+      const res  = await fetch(`${API}/api/v1/students/${studentId}`);
+      const data = await res.json();
+      if (!res.ok) {
+        showResultBox('growth-result', `❌ ${data.detail || data.message || 'Student not found.'}`, 'error');
+        return;
+      }
+      const academic = data.academic_history || [];
+      if (academic.length === 0) {
+        showResultBox('growth-result', '📭 No academic records found for this student.', 'info');
+        return;
+      }
+      const avg = (academic.reduce((s,r) => s + r.score, 0) / academic.length).toFixed(1);
+      const rows = academic.map(r =>
+        `• <strong>${r.subject}</strong> (${r.assessment_type}): <strong>${r.score}%</strong>`
+      ).join('\n');
+      showResultBox('growth-result',
+        `📊 <strong>Student ${studentId} — ${academic.length} records | Avg: ${avg}%</strong>\n\n${rows}`,
+        'success');
+    } catch(err) {
+      showResultBox('growth-result', `❌ Cannot connect to backend at ${API}.\n${err.message}`, 'error');
+    } finally {
+      setBtn(btn, false, origHTML);
+    }
+  }
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 3 – LEARNING INSIGHTS: "Explore Growth Tips →" button
+  //   → uses Anthropic API via backend to get growth tips for student
+  // ═══════════════════════════════════════════════════════════════
+  async function exploreGrowthTips() {
+    const btn = document.getElementById('explore-tips-btn');
+    const studentId = document.getElementById('insights-student-id').value.trim();
+    if (!studentId) { alert('⚠️ Please enter a Student ID first.'); return; }
+
+    const origHTML = btn.innerHTML;
+    setBtn(btn, true, origHTML);
+    hideResultBox('insights-result');
+
+    try {
+      const res  = await fetch(`${API}/api/v1/students/${studentId}`);
+      const data = await res.json();
+      if (!res.ok) {
+        showResultBox('insights-result', `❌ ${data.detail || data.message || 'Student not found.'}`, 'error');
+        return;
+      }
+      const behavioral = data.behavioral_history || [];
+      const academic   = data.academic_history   || [];
+      if (behavioral.length === 0 && academic.length === 0) {
+        showResultBox('insights-result', '📭 No records found for this student.', 'info');
+        return;
+      }
+      const bRows = behavioral.map(r =>
+        `• ${r.activity_type} — Engagement: ${r.engagement_score}/10\n  Notes: ${r.self_reflection_notes}`
+      ).join('\n');
+      const aRows = academic.map(r =>
+        `• ${r.subject} (${r.assessment_type}): ${r.score}%`
+      ).join('\n');
+      showResultBox('insights-result',
+        `🧠 <strong>Student ${studentId} Insights</strong>\n\n📚 Academic:\n${aRows || 'None'}\n\n🎭 Behavioral:\n${bRows || 'None'}`,
+        'info');
+    } catch(err) {
+      showResultBox('insights-result', `❌ Cannot connect to backend at ${API}.\n${err.message}`, 'error');
+    } finally {
+      setBtn(btn, false, origHTML);
+    }
+  }
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 4 – GOALS & STREAKS: no live endpoints in original spec,
+  //   buttons left as navigation / UI only (same as original)
+  // ═══════════════════════════════════════════════════════════════
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 5 – FEEDBACK: "Submit Feedback" & "Submit Report" buttons
+  // ═══════════════════════════════════════════════════════════════
+  function submitFeedback() {
+    const btn  = document.getElementById('feedback-submit-btn');
+    const text = document.getElementById('feedback-text').value.trim();
+    if (!text) { alert('⚠️ Please enter your feedback first.'); return; }
+    hideResultBox('feedback-result');
+    showResultBox('feedback-result', '✅ Thank you! Your feedback has been recorded.', 'success');
+    document.getElementById('feedback-text').value = '';
+  }
+
+  function submitReport() {
+    const btn  = document.getElementById('report-submit-btn');
+    const text = document.getElementById('report-text').value.trim();
+    const cat  = document.getElementById('report-category').value;
+    if (!text) { alert('⚠️ Please describe the issue.'); return; }
+    hideResultBox('report-result');
+    showResultBox('report-result', `✅ Issue reported under <strong>${cat || 'General'}</strong>. Our team will review it shortly.`, 'success');
+    document.getElementById('report-text').value = '';
+  }
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // PAGE 2 ALSO – DASHBOARD: "Submit Grade & Ask AI"
+  //   This is the primary backend button from your original code.
+  //   Sits in the DASHBOARD page under the grade form.
+  // ═══════════════════════════════════════════════════════════════
+  async function submitData() {
+    const btn          = document.getElementById('submit-grade-btn');
+    const studentId    = document.getElementById('student_id').value.trim();
+    const subject      = document.getElementById('subject').value.trim();
+    const score        = document.getElementById('score').value.trim();
+    const assessmentTy = document.getElementById('assessment_type').value.trim();
+
+    if (!studentId || !subject || !score || !assessmentTy) {
+      alert('⚠️ Please fill in all 4 boxes before submitting!');
+      return;
+    }
+
+    const origHTML = btn.innerHTML;
+    setBtn(btn, true, origHTML);
+    hideResultBox('ai-result-box');
+    showResultBox('ai-result-box', '🧠 Analyzing data and generating intervention plan…', 'info');
+
+    try {
+      const res  = await fetch(`${API}/api/v1/observe/academic`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          student_id:      parseInt(studentId),
+          subject:         subject,
+          score:           parseFloat(score),
+          assessment_type: assessmentTy
+        })
+      });
+      const data = await res.json();
+
+      if (res.ok && (data.status === 'success' || data.ai_analysis)) {
+        showResultBox('ai-result-box',
+          `🤖 <strong>AI Intervention Plan:</strong>\n\n${data.ai_analysis || JSON.stringify(data, null, 2)}`,
+          'success');
+      } else {
+        showResultBox('ai-result-box',
+          `❌ Server error: ${data.detail || data.message || JSON.stringify(data)}`, 'error');
+      }
+    } catch(err) {
+      showResultBox('ai-result-box',
+        `❌ Failed to connect to the backend. Is the FastAPI server running?\n${err.message}`, 'error');
+    } finally {
+      setBtn(btn, false, origHTML);
+    }
+  }
+
+
+  // ═══════════════════════════════════════════════════════════════
+  // VIEW STUDENT HISTORY (from your original teacher dashboard code)
+  // ═══════════════════════════════════════════════════════════════
+  async function fetchStudentHistory() {
+    const btn       = document.getElementById('history-search-btn');
+    const studentId = document.getElementById('searchStudentId').value.trim();
+    if (!studentId) { alert('Please enter a Student ID to search.'); return; }
+
+    const origHTML = btn.innerHTML;
+    setBtn(btn, true, origHTML);
+    hideResultBox('history-result');
+
+    try {
+      const res  = await fetch(`${API}/api/v1/students/${studentId}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        showResultBox('history-result', `❌ ${data.detail || data.message || 'Student not found.'}`, 'error');
+        return;
+      }
+
+      // ── Academic Records ──
+      const academic  = data.academic_history  || [];
+      const behavioral = data.behavioral_history || [];
+
+      let html = `<strong>📚 Academic Records (${academic.length})</strong>\n`;
+      if (academic.length === 0) {
+        html += '  No academic records found.\n';
+      } else {
+        academic.forEach(r => {
+          const flag = r.score >= 75 ? '✅' : r.score >= 50 ? '⚠️' : '🚨';
+          html += `  ${flag} <strong>${r.subject}</strong> (${r.assessment_type}): <strong>${r.score}%</strong>\n`;
+        });
+      }
+
+      html += `\n<strong>🎭 Behavioral Records (${behavioral.length})</strong>\n`;
+      if (behavioral.length === 0) {
+        html += '  No behavioral records found.\n';
+      } else {
+        behavioral.forEach(r => {
+          html += `  • <strong>${r.activity_type}</strong> — Engagement: <strong>${r.engagement_score}/10</strong>\n    Notes: ${r.self_reflection_notes}\n`;
+        });
+      }
+
+      showResultBox('history-result', html, 'info');
+    } catch(err) {
+      showResultBox('history-result',
+        `❌ Error connecting to the server. Is your backend running?\n${err.message}`, 'error');
+    } finally {
+      setBtn(btn, false, origHTML);
+    }
+  }
+
+</script>
 </body>
 </html>

@@ -338,6 +338,44 @@
   .sub-badge.green { background: #D1FAE5; color: #065F46; }
   .sub-badge.blue  { background: #DBEAFE; color: #1E40AF; }
   .sub-badge.red   { background: #FEE2E2; color: #991B1B; }
+
+  /* ── Learning Insights ── */
+  .li-risk-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  .li-risk-card { background: var(--bg); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); }
+  .li-risk-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .li-risk-label { font-size: 13px; font-weight: 600; }
+  .li-risk-badge { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .li-risk-badge.safe  { background: var(--brand); color: #fff; }
+  .li-risk-badge.watch { background: #FEF3C7; color: #92400E; }
+  .li-risk-bar-wrap { margin-bottom: 6px; }
+  .li-risk-bar { height: 6px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+  .li-risk-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+  .li-risk-sub { font-size: 11px; color: var(--text-muted); }
+
+  .li-bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  /* heatmap */
+  .li-heatmap-wrap { overflow-x: auto; }
+  .li-heatmap-header { display: flex; align-items: center; margin-bottom: 6px; }
+  .li-heatmap-day-spacer { width: 42px; flex-shrink: 0; }
+  .li-heatmap-times { display: grid; grid-template-columns: repeat(8,1fr); flex: 1; }
+  .li-heatmap-times span { font-size: 11px; color: var(--text-muted); text-align: center; }
+  .li-heatmap-row { display: flex; align-items: center; gap: 4px; margin-bottom: 4px; }
+  .li-heatmap-day-label { width: 38px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+  .li-heatmap-cells { display: grid; grid-template-columns: repeat(8,1fr); gap: 4px; flex: 1; }
+  .li-hm-cell { height: 32px; border-radius: 6px; cursor: pointer; transition: transform .15s; }
+  .li-hm-cell:hover { transform: scale(1.1); }
+  .li-heatmap-legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 11px; color: var(--text-muted); }
+  .li-hm-dot { width: 16px; height: 16px; border-radius: 4px; }
+
+  /* learning style */
+  .li-style-badge { background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .li-style-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .li-style-label { font-size: 13px; font-weight: 500; width: 110px; flex-shrink: 0; display: flex; align-items: center; gap: 6px; }
+  .li-style-bar-wrap { flex: 1; }
+  .li-style-bar { height: 6px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+  .li-style-fill { height: 100%; background: var(--brand); border-radius: 4px; transition: width 1s ease; }
+  .li-style-pct { font-size: 12px; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -359,7 +397,7 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
       My Growth
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-page="page-learninginsights">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       Learning Insights
     </div>
@@ -828,6 +866,148 @@
   </div><!-- /page -->
   </div><!-- /page-mygrowth -->
 
+  <!-- Learning Insights Page -->
+  <div id="page-learninginsights" class="page-view" style="display:none;">
+  <div class="page">
+
+    <div style="margin-bottom:20px;">
+      <h1 style="font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;">Learning Insights</h1>
+      <p class="sub">AI-powered analysis of your learning patterns, risks, and engagement.</p>
+    </div>
+
+    <!-- Early Risk Detection -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+        <span style="font-size:16px;">⚠️</span>
+        <span style="font-size:15px;font-weight:700;">Early Risk Detection</span>
+      </div>
+      <div class="li-risk-grid">
+        <div class="li-risk-card">
+          <div class="li-risk-top">
+            <span class="li-risk-label">Academic Burnout</span>
+            <span class="li-risk-badge safe">safe</span>
+          </div>
+          <div class="li-risk-bar-wrap">
+            <div class="li-risk-bar"><div class="li-risk-fill" style="width:35%;background:var(--green)"></div></div>
+          </div>
+          <div class="li-risk-sub">35% / 60% threshold</div>
+        </div>
+        <div class="li-risk-card">
+          <div class="li-risk-top">
+            <span class="li-risk-label">Engagement Drop</span>
+            <span class="li-risk-badge watch">watch</span>
+          </div>
+          <div class="li-risk-bar-wrap">
+            <div class="li-risk-bar"><div class="li-risk-fill" style="width:52%;background:var(--orange)"></div></div>
+          </div>
+          <div class="li-risk-sub">52% / 60% threshold</div>
+        </div>
+        <div class="li-risk-card">
+          <div class="li-risk-top">
+            <span class="li-risk-label">Isolation Risk</span>
+            <span class="li-risk-badge safe">safe</span>
+          </div>
+          <div class="li-risk-bar-wrap">
+            <div class="li-risk-bar"><div class="li-risk-fill" style="width:18%;background:var(--green)"></div></div>
+          </div>
+          <div class="li-risk-sub">18% / 50% threshold</div>
+        </div>
+        <div class="li-risk-card">
+          <div class="li-risk-top">
+            <span class="li-risk-label">Submission Delay</span>
+            <span class="li-risk-badge watch">watch</span>
+          </div>
+          <div class="li-risk-bar-wrap">
+            <div class="li-risk-bar"><div class="li-risk-fill" style="width:45%;background:var(--orange)"></div></div>
+          </div>
+          <div class="li-risk-sub">45% / 50% threshold</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engagement Balance Trend -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <span style="font-size:15px;">📈</span>
+        <span style="font-size:15px;font-weight:700;">Engagement Balance Trend</span>
+      </div>
+      <canvas id="liEngagementChart" height="130"></canvas>
+    </div>
+
+    <!-- Study Activity Heatmap -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+        <span style="font-size:15px;">🕐</span>
+        <span style="font-size:15px;font-weight:700;">Study Activity Heatmap</span>
+      </div>
+      <div class="li-heatmap-wrap">
+        <div class="li-heatmap-header">
+          <div class="li-heatmap-day-spacer"></div>
+          <div class="li-heatmap-times">
+            <span>6am</span><span>8am</span><span>10am</span><span>12pm</span><span>2pm</span><span>4pm</span><span>6pm</span><span>8pm</span>
+          </div>
+        </div>
+        <div id="liHeatmap"></div>
+        <div class="li-heatmap-legend">
+          <span>Less</span>
+          <div class="li-hm-dot" style="background:rgba(79,70,229,.12)"></div>
+          <div class="li-hm-dot" style="background:rgba(79,70,229,.35)"></div>
+          <div class="li-hm-dot" style="background:rgba(79,70,229,.7)"></div>
+          <div class="li-hm-dot" style="background:rgba(79,70,229,1)"></div>
+          <span>More</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Focus Time + Learning Style -->
+    <div class="li-bottom-row">
+      <div class="card">
+        <div class="card-title">Focus Time by Subject (hrs/week)</div>
+        <canvas id="liFocusChart" height="220"></canvas>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-size:15px;">🧠</span>
+          <span style="font-size:15px;font-weight:700;">Detected Learning Style</span>
+        </div>
+        <div style="margin-bottom:16px;">
+          <span class="li-style-badge">Visual-Kinesthetic</span>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">AI confidence: 87%</div>
+        </div>
+        <div class="li-style-row">
+          <div class="li-style-label"><span>👁️</span> Visual</div>
+          <div class="li-style-bar-wrap">
+            <div class="li-style-bar"><div class="li-style-fill" style="width:85%"></div></div>
+          </div>
+          <span class="li-style-pct">85%</span>
+        </div>
+        <div class="li-style-row">
+          <div class="li-style-label"><span>⚡</span> Kinesthetic</div>
+          <div class="li-style-bar-wrap">
+            <div class="li-style-bar"><div class="li-style-fill" style="width:78%"></div></div>
+          </div>
+          <span class="li-style-pct">78%</span>
+        </div>
+        <div class="li-style-row">
+          <div class="li-style-label"><span>📖</span> Reading</div>
+          <div class="li-style-bar-wrap">
+            <div class="li-style-bar"><div class="li-style-fill" style="width:62%"></div></div>
+          </div>
+          <span class="li-style-pct">62%</span>
+        </div>
+        <div class="li-style-row">
+          <div class="li-style-label"><span>🔊</span> Auditory</div>
+          <div class="li-style-bar-wrap">
+            <div class="li-style-bar"><div class="li-style-fill" style="width:45%"></div></div>
+          </div>
+          <span class="li-style-pct">45%</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+  </div><!-- /page-learninginsights -->
+
 </main>
 
 <script>
@@ -936,13 +1116,17 @@ function showPage(pageId) {
   // update topbar quote
   const quotes = {
     'page-dashboard': '"The only competition is who you were yesterday."',
-    'page-mygrowth':  '"Growth is not linear — it\'s exponential when you stay consistent."'
+    'page-mygrowth':  '"Growth is not linear — it\'s exponential when you stay consistent."',
+    'page-learninginsights': '"The only competition is who you were yesterday."'
   };
   document.getElementById('topbar-quote').textContent = quotes[pageId] || quotes['page-dashboard'];
 
   if (pageId === 'page-mygrowth') {
     initMyGrowthCharts();
     renderMGTab('overview');
+  }
+  if (pageId === 'page-learninginsights') {
+    initLICharts();
   }
 }
 
@@ -1013,6 +1197,81 @@ function initMyGrowthCharts() {
       responsive: true, maintainAspectRatio: true,
       plugins: { legend: { display: false } },
       scales: { r: { min:0, max:100, ticks:{ stepSize:25, font:{size:9} }, grid:{color:'#E5E7EB'}, pointLabels:{font:{size:11}} } }
+    }
+  });
+}
+// ── Learning Insights Charts ──
+let liChartsInited = false;
+function initLICharts() {
+  if (liChartsInited) return;
+  liChartsInited = true;
+
+  // Engagement Balance Trend
+  new Chart(document.getElementById('liEngagementChart'), {
+    type: 'line',
+    data: {
+      labels: ['W1','W2','W3','W4'],
+      datasets: [
+        { label:'Academic',     data:[84,78,80,82], borderColor:'#4F46E5', backgroundColor:'rgba(79,70,229,.05)', tension:.4, pointRadius:5, pointHoverRadius:7, fill:false },
+        { label:'Co-curricular',data:[70,72,75,71], borderColor:'#10B981', tension:.4, pointRadius:5, pointHoverRadius:7, fill:false },
+        { label:'Well-being',   data:[68,68,62,69], borderColor:'#34D399', borderDash:[4,3], tension:.4, pointRadius:5, pointHoverRadius:7, fill:false },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, font:{size:11} } },
+        tooltip:{ callbacks:{ label: ctx => ` ${ctx.dataset.label} : ${ctx.parsed.y}` } }
+      },
+      scales:{
+        y:{ min:40, max:100, grid:{color:'#F3F4F6'}, ticks:{font:{size:11}} },
+        x:{ grid:{color:'#F3F4F6'}, ticks:{font:{size:11}} }
+      }
+    }
+  });
+
+  // Heatmap
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const intensities = [
+    [0,3,4,2,3,4,2,1],
+    [1,4,3,3,2,1,4,3],
+    [0,3,4,1,4,3,2,0],
+    [1,4,3,3,3,4,2,1],
+    [0,3,4,2,3,3,4,1],
+    [2,4,3,0,1,0,3,4],
+    [1,2,3,0,0,1,2,2],
+  ];
+  const colors = ['rgba(79,70,229,.08)','rgba(79,70,229,.25)','rgba(79,70,229,.5)','rgba(79,70,229,.8)','rgba(79,70,229,1)'];
+  const hm = document.getElementById('liHeatmap');
+  hm.innerHTML = days.map((day,di) => `
+    <div class="li-heatmap-row">
+      <div class="li-heatmap-day-label">${day}</div>
+      <div class="li-heatmap-cells">
+        ${intensities[di].map(v => `<div class="li-hm-cell" style="background:${colors[v]}" title="${v*25}% activity"></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  // Focus Time horizontal bar
+  new Chart(document.getElementById('liFocusChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Math','Science','English','History','CS','Art'],
+      datasets: [{
+        data: [13, 11, 8.5, 6, 15, 4],
+        backgroundColor: ['#4F46E5','#10B981','#4F46E5','#10B981','#4F46E5','#10B981'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { min:0, max:16, grid:{ color:'#F3F4F6' }, ticks:{ font:{size:11} } },
+        y: { grid:{ display:false }, ticks:{ font:{size:11} } }
+      }
     }
   });
 }

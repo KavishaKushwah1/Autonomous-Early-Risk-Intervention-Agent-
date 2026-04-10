@@ -376,6 +376,227 @@
   .li-style-bar { height: 6px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
   .li-style-fill { height: 100%; background: var(--brand); border-radius: 4px; transition: width 1s ease; }
   .li-style-pct { font-size: 12px; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
+
+  /* ══ Activities & Engagement ══ */
+
+  /* Co-curriculars */
+  .act-cc-list { display: flex; flex-direction: column; gap: 2px; }
+  .act-cc-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 12px; border-radius: 10px;
+    transition: background .15s; cursor: pointer;
+  }
+  .act-cc-item:hover { background: var(--bg); }
+  .act-cc-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .act-cc-body { flex: 1; }
+  .act-cc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .act-cc-name { font-size: 14px; font-weight: 600; }
+  .act-cat-badge { font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
+  .act-cc-bar-row { margin-bottom: 6px; }
+  .act-cc-bar { height: 5px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+  .act-cc-fill { height: 100%; background: linear-gradient(90deg, var(--brand) 40%, var(--green) 100%); border-radius: 4px; transition: width .8s ease; }
+  .act-cc-sub { font-size: 11px; color: var(--text-muted); }
+  .act-status-badge { background: var(--brand); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; flex-shrink: 0; }
+
+  /* Competition History */
+  .act-comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .act-comp-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+    transition: box-shadow .2s;
+  }
+  .act-comp-card:hover { box-shadow: var(--shadow); }
+  .act-comp-name { font-size: 13px; font-weight: 600; }
+  .act-comp-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .act-result-badge { background: #F3F4F6; color: var(--text-secondary); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+
+  /* Badges + Leaderboard row */
+  .act-bl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .act-badge-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .act-badge-card {
+    border-radius: 12px; padding: 16px 10px; text-align: center;
+    border: 1px solid var(--border); transition: transform .2s;
+  }
+  .act-badge-card:hover { transform: translateY(-2px); }
+  .act-badge-card.earned { background: #FFFBEB; }
+  .act-badge-card.locked { background: var(--bg); opacity: .55; }
+  .act-badge-icon { font-size: 24px; margin-bottom: 8px; }
+  .act-badge-name { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .act-badge-desc { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+
+  /* Leaderboard */
+  .act-lb-list { display: flex; flex-direction: column; gap: 4px; }
+  .act-lb-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 12px; border-radius: 10px;
+    transition: background .15s;
+  }
+  .act-lb-item:hover { background: var(--bg); }
+  .act-lb-item.highlight { background: var(--brand-light); }
+  .act-lb-rank { font-size: 13px; font-weight: 700; width: 26px; flex-shrink: 0; color: var(--text-muted); }
+  .act-lb-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--brand); flex-shrink: 0; }
+  .act-lb-name { flex: 1; font-size: 13px; font-weight: 600; }
+  .act-lb-xp { background: var(--green); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+
+  /* Library stats */
+  .act-lib-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 4px; }
+  .act-lib-stat {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 16px 18px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow);
+    transition: transform .2s;
+  }
+  .act-lib-stat:hover { transform: translateY(-2px); }
+  .act-lib-stat-icon { font-size: 24px; background: var(--brand-light); width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .act-lib-val { font-size: 24px; font-weight: 700; }
+  .act-lib-label { font-size: 11px; color: var(--text-muted); }
+  .act-lib-delta { margin-left: auto; font-size: 12px; font-weight: 600; color: var(--green); background: var(--green-light); padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+
+  /* Teacher list */
+  .act-teacher-list { display: flex; flex-direction: column; gap: 4px; }
+  .act-teacher-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg); margin-bottom: 6px;
+  }
+  .act-teacher-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--brand-light); color: var(--brand); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .act-teacher-info { flex: 1; }
+  .act-teacher-name { font-size: 14px; font-weight: 600; }
+  .act-teacher-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .act-teacher-stats { display: flex; gap: 24px; }
+  .act-teacher-stat { display: flex; flex-direction: column; align-items: center; }
+  .act-stat-val { font-size: 16px; font-weight: 700; }
+  .act-stat-lbl { font-size: 10px; color: var(--text-muted); }
+  .act-teacher-date { font-size: 12px; color: var(--text-muted); background: var(--border); padding: 4px 10px; border-radius: 8px; flex-shrink: 0; }
+
+  /* Privacy banner */
+  .act-private-banner { display: flex; flex-direction: column; align-items: center; padding: 32px 20px; text-align: center; }
+  .act-private-icon { margin-bottom: 12px; }
+  .act-private-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .act-private-desc { font-size: 13px; color: var(--text-secondary); max-width: 580px; line-height: 1.6; margin-bottom: 14px; }
+  .act-private-badge { background: var(--orange-light); color: #92400E; font-size: 12px; font-weight: 600; padding: 5px 16px; border-radius: 20px; border: 1px solid #FDE68A; }
+
+  /* ══ Goals ══ */
+  .goals-two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; margin-bottom: 16px; }
+
+  /* Interest streaks */
+  .goals-streak-list { display: flex; flex-direction: column; gap: 0; }
+  .goals-streak-item { padding: 18px 16px; border-bottom: 1px solid var(--border); }
+  .goals-streak-item:last-child { border-bottom: none; }
+  .goals-streak-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .goals-streak-name { font-size: 15px; font-weight: 600; flex: 1; }
+  .goals-streak-days { background: #F3F4F6; border: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .goals-streak-date { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+  .goals-validated { background: #DCFCE7; color: #16A34A; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .goals-reflect-label { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .goals-reflect-textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; font-family: inherit;
+    font-size: 13px; color: var(--text-secondary); resize: vertical;
+    min-height: 72px; outline: none; transition: border-color .15s;
+  }
+  .goals-reflect-textarea:focus { border-color: var(--brand); }
+  .goals-submit-btn {
+    margin-top: 10px; display: flex; align-items: center; gap: 7px;
+    background: var(--brand-light); color: var(--brand);
+    border: none; border-radius: 20px; padding: 8px 18px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s;
+  }
+  .goals-submit-btn:hover { background: #C7D2FE; }
+
+  /* Active goals */
+  .goals-active-list { display: flex; flex-direction: column; gap: 12px; }
+  .goals-goal-item { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; transition: box-shadow .2s; }
+  .goals-goal-item:hover { box-shadow: var(--shadow); }
+  .goals-goal-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .goals-goal-name { font-size: 14px; font-weight: 600; }
+  .goals-xp-badge { background: var(--green); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
+  .goals-goal-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .goals-cat-tag { font-size: 11px; font-weight: 500; background: #F3F4F6; border: 1px solid var(--border); color: var(--text-secondary); padding: 2px 9px; border-radius: 20px; }
+  .goals-due-tag { font-size: 11px; color: var(--text-muted); }
+  .goals-goal-bar { height: 5px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+  .goals-goal-fill { height: 100%; background: linear-gradient(90deg, var(--brand) 40%, var(--green) 100%); border-radius: 4px; transition: width .8s ease; }
+  .goals-goal-pct { font-size: 12px; font-weight: 600; color: var(--text-secondary); text-align: right; }
+
+  /* Rewards */
+  .goals-rewards-list { display: flex; flex-direction: column; gap: 10px; }
+  .goals-reward-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg); cursor: pointer; transition: box-shadow .15s;
+  }
+  .goals-reward-item:hover { box-shadow: var(--shadow); }
+  .goals-reward-icon { width: 36px; height: 36px; border-radius: 9px; background: #ECFDF5; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .goals-reward-name { font-size: 13px; font-weight: 600; flex: 1; }
+  .goals-reward-xp { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .goals-reward-arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* Goals top stat row */
+  .goals-stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .goals-level-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px !important; }
+  .goals-level-circle { width: 56px; height: 56px; border-radius: 50%; background: var(--brand-light); color: var(--brand); font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .goals-level-body { flex: 1; }
+  .goals-level-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .goals-level-bar-wrap { margin-bottom: 5px; }
+  .goals-level-bar { height: 5px; background: #E5E7EB; border-radius: 4px; overflow: hidden; }
+  .goals-level-fill { height: 100%; background: linear-gradient(90deg, var(--brand) 40%, var(--green) 100%); border-radius: 4px; }
+  .goals-level-xp { font-size: 12px; color: var(--text-muted); }
+  .goals-mini-stat { display: flex; align-items: center; gap: 14px; padding: 18px 20px !important; }
+  .goals-mini-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .goals-mini-val { font-size: 28px; font-weight: 800; line-height: 1; }
+  .goals-mini-label { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ══ Well-being ══ */
+  .wb-top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+  /* Mood selector */
+  .wb-mood-grid { display: flex; justify-content: space-around; margin: 16px 0 20px; }
+  .wb-mood-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 10px 14px; border-radius: 12px; transition: background .15s; }
+  .wb-mood-btn:hover { background: var(--bg); }
+  .wb-mood-btn.selected { background: var(--brand-light); }
+  .wb-mood-emoji { font-size: 28px; }
+  .wb-mood-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+  .wb-journal-textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; font-family: inherit;
+    font-size: 13px; color: var(--text-secondary); resize: vertical;
+    min-height: 90px; outline: none; transition: border-color .15s;
+  }
+  .wb-journal-textarea:focus { border-color: var(--brand); }
+  .wb-save-btn {
+    width: 100%; margin-top: 12px; padding: 12px;
+    background: var(--brand); color: #fff; border: none; border-radius: 10px;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity .15s;
+  }
+  .wb-save-btn:hover { opacity: .88; }
+
+  /* Journal entries */
+  .wb-two-col { display: grid; grid-template-columns: 1fr 340px; gap: 16px; margin-bottom: 16px; }
+  .wb-journal-list { display: flex; flex-direction: column; gap: 12px; }
+  .wb-journal-entry { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .wb-entry-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .wb-entry-date { font-size: 13px; font-weight: 600; flex: 1; }
+  .wb-mood-tag { font-size: 11px; font-weight: 500; background: #F3F4F6; border: 1px solid var(--border); color: var(--text-secondary); padding: 3px 10px; border-radius: 20px; }
+  .wb-sentiment-tag { font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; color: #fff; }
+  .wb-sentiment-tag.positive  { background: var(--brand); }
+  .wb-sentiment-tag.mixed     { background: var(--green); }
+  .wb-sentiment-tag.concerned { background: var(--red); }
+  .wb-entry-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .wb-entry-ai { font-size: 11px; color: var(--brand); display: flex; align-items: center; gap: 5px; }
+
+  /* Well-being dimensions radar */
+  .wb-radar-card { }
+
+  /* AI tips grid */
+  .wb-tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wb-tip-card {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; transition: box-shadow .2s;
+  }
+  .wb-tip-card:hover { box-shadow: var(--shadow); }
+  .wb-tip-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--brand-light); display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 10px; }
+  .wb-tip-text { font-size: 13px; font-weight: 600; line-height: 1.5; margin-bottom: 6px; }
+  .wb-tip-source { font-size: 11px; color: var(--brand); margin-bottom: 10px; display: flex; align-items: center; gap: 4px; }
+  .wb-tip-cat { font-size: 11px; font-weight: 600; background: #F3F4F6; border: 1px solid var(--border); color: var(--text-secondary); padding: 3px 10px; border-radius: 20px; display: inline-block; }
 </style>
 </head>
 <body>
@@ -401,15 +622,15 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       Learning Insights
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-page="page-activities">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       Activities
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-page="page-goals">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Goals
     </div>
-    <div class="nav-item">
+    <div class="nav-item" data-page="page-wellbeing">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       Well-being
     </div>
@@ -1008,6 +1229,757 @@
   </div><!-- /page -->
   </div><!-- /page-learninginsights -->
 
+  <!-- ══════════════════════════════════════
+       Activities & Engagement Page
+  ══════════════════════════════════════ -->
+  <div id="page-activities" class="page-view" style="display:none;">
+  <div class="page">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+      <div>
+        <h1 style="font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;">Activities &amp; Engagement</h1>
+        <p class="sub">Co-curriculars, library usage, teacher mentoring &amp; competitions.</p>
+      </div>
+      <div class="mg-tabs">
+        <button class="mg-tab-btn act-tab active" data-tab="act-activities" onclick="renderActTab('act-activities')">Activities</button>
+        <button class="mg-tab-btn act-tab" data-tab="act-library" onclick="renderActTab('act-library')">Library</button>
+        <button class="mg-tab-btn act-tab" data-tab="act-teachers" onclick="renderActTab('act-teachers')">Teachers</button>
+      </div>
+    </div>
+
+    <!-- ── ACTIVITIES TAB ── -->
+    <div class="act-tab-content" data-tab="act-activities">
+
+      <!-- My Co-Curriculars -->
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <span style="color:var(--brand);">📶</span>
+          <span class="card-title" style="margin:0;">My Co-Curriculars</span>
+        </div>
+        <div class="act-cc-list">
+          <div class="act-cc-item">
+            <div class="act-cc-icon" style="background:#FFF7ED;">👥</div>
+            <div class="act-cc-body">
+              <div class="act-cc-top">
+                <span class="act-cc-name">Debate Club</span>
+                <span class="act-cat-badge" style="background:#FEF3C7;color:#92400E;">Leadership</span>
+              </div>
+              <div class="act-cc-bar-row">
+                <div class="act-cc-bar"><div class="act-cc-fill" style="width:75%"></div></div>
+              </div>
+              <div class="act-cc-sub">12 hrs logged · 75% complete</div>
+            </div>
+            <span class="act-status-badge">Active</span>
+          </div>
+          <div class="act-cc-item">
+            <div class="act-cc-icon" style="background:#ECFDF5;">🏆</div>
+            <div class="act-cc-body">
+              <div class="act-cc-top">
+                <span class="act-cc-name">Basketball Team</span>
+                <span class="act-cat-badge" style="background:#D1FAE5;color:#065F46;">Sports</span>
+              </div>
+              <div class="act-cc-bar-row">
+                <div class="act-cc-bar"><div class="act-cc-fill" style="width:60%"></div></div>
+              </div>
+              <div class="act-cc-sub">18 hrs logged · 60% complete</div>
+            </div>
+            <span class="act-status-badge">Active</span>
+          </div>
+          <div class="act-cc-item">
+            <div class="act-cc-icon" style="background:#EEF2FF;">🎓</div>
+            <div class="act-cc-body">
+              <div class="act-cc-top">
+                <span class="act-cc-name">Science Olympiad</span>
+                <span class="act-cat-badge" style="background:#DBEAFE;color:#1E40AF;">Academic</span>
+              </div>
+              <div class="act-cc-bar-row">
+                <div class="act-cc-bar"><div class="act-cc-fill" style="width:90%"></div></div>
+              </div>
+              <div class="act-cc-sub">24 hrs logged · 90% complete</div>
+            </div>
+            <span class="act-status-badge">Active</span>
+          </div>
+          <div class="act-cc-item">
+            <div class="act-cc-icon" style="background:#FFF1F2;">🎨</div>
+            <div class="act-cc-body">
+              <div class="act-cc-top">
+                <span class="act-cc-name">Art Workshop</span>
+                <span class="act-cat-badge" style="background:#FEE2E2;color:#991B1B;">Creative</span>
+              </div>
+              <div class="act-cc-bar-row">
+                <div class="act-cc-bar"><div class="act-cc-fill" style="width:30%"></div></div>
+              </div>
+              <div class="act-cc-sub">6 hrs logged · 30% complete</div>
+            </div>
+            <span class="act-status-badge">Active</span>
+          </div>
+          <div class="act-cc-item">
+            <div class="act-cc-icon" style="background:#ECFDF5;">💻</div>
+            <div class="act-cc-body">
+              <div class="act-cc-top">
+                <span class="act-cc-name">Coding Club</span>
+                <span class="act-cat-badge" style="background:#D1FAE5;color:#065F46;">Technology</span>
+              </div>
+              <div class="act-cc-bar-row">
+                <div class="act-cc-bar"><div class="act-cc-fill" style="width:65%"></div></div>
+              </div>
+              <div class="act-cc-sub">15 hrs logged · 65% complete</div>
+            </div>
+            <span class="act-status-badge">Active</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Competition History -->
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <span style="color:var(--orange);">🏆</span>
+          <span class="card-title" style="margin:0;">Competition History</span>
+        </div>
+        <div class="act-comp-grid">
+          <div class="act-comp-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;color:var(--orange);">🏆</span>
+              <div>
+                <div class="act-comp-name">Inter-School Debate</div>
+                <div class="act-comp-meta">Mar 15 · Leadership</div>
+              </div>
+            </div>
+            <span class="act-result-badge neutral">1st Place</span>
+          </div>
+          <div class="act-comp-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;color:var(--orange);">🏆</span>
+              <div>
+                <div class="act-comp-name">Science Fair 2025</div>
+                <div class="act-comp-meta">Feb 28 · Academic</div>
+              </div>
+            </div>
+            <span class="act-result-badge neutral">Silver Medal</span>
+          </div>
+          <div class="act-comp-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;color:var(--orange);">🏆</span>
+              <div>
+                <div class="act-comp-name">District Basketball</div>
+                <div class="act-comp-meta">Feb 10 · Sports</div>
+              </div>
+            </div>
+            <span class="act-result-badge neutral">Quarter-finals</span>
+          </div>
+          <div class="act-comp-card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:20px;color:var(--orange);">🏆</span>
+              <div>
+                <div class="act-comp-name">Code Sprint</div>
+                <div class="act-comp-meta">Jan 20 · Technology</div>
+              </div>
+            </div>
+            <span class="act-result-badge neutral">2nd Place</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges + Leaderboard -->
+      <div class="act-bl-row">
+        <!-- Badges -->
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+            <span style="color:var(--orange);">🏆</span>
+            <span class="card-title" style="margin:0;">Badges</span>
+          </div>
+          <div class="act-badge-grid">
+            <div class="act-badge-card earned">
+              <div class="act-badge-icon">⭐</div>
+              <div class="act-badge-name">First Steps</div>
+              <div class="act-badge-desc">Joined your first activity</div>
+            </div>
+            <div class="act-badge-card earned">
+              <div class="act-badge-icon">👥</div>
+              <div class="act-badge-name">Team Player</div>
+              <div class="act-badge-desc">Collaborated in 5 group tasks</div>
+            </div>
+            <div class="act-badge-card earned">
+              <div class="act-badge-icon">⏰</div>
+              <div class="act-badge-name">Time Master</div>
+              <div class="act-badge-desc">Logged 50+ activity hours</div>
+            </div>
+            <div class="act-badge-card earned">
+              <div class="act-badge-icon">📚</div>
+              <div class="act-badge-name">Bookworm</div>
+              <div class="act-badge-desc">Read 20+ library books</div>
+            </div>
+            <div class="act-badge-card locked">
+              <div class="act-badge-icon">🏆</div>
+              <div class="act-badge-name">Champion</div>
+              <div class="act-badge-desc">Won a competition</div>
+            </div>
+            <div class="act-badge-card locked">
+              <div class="act-badge-icon">🎯</div>
+              <div class="act-badge-name">All-Rounder</div>
+              <div class="act-badge-desc">Active in 5+ categories</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+            <span style="color:var(--orange);">🏆</span>
+            <span class="card-title" style="margin:0;">Leaderboard</span>
+          </div>
+          <div class="act-lb-list">
+            <div class="act-lb-item">
+              <span class="act-lb-rank" style="color:var(--orange);">#1</span>
+              <div class="act-lb-avatar" style="background:#C7D2FE;">PS</div>
+              <span class="act-lb-name">Priya S.</span>
+              <span class="act-lb-xp">2840 XP</span>
+            </div>
+            <div class="act-lb-item highlight">
+              <span class="act-lb-rank" style="color:var(--orange);">#2</span>
+              <div class="act-lb-avatar" style="background:#A5B4FC;">KK</div>
+              <span class="act-lb-name">Kira K.</span>
+              <span class="act-lb-xp">2650 XP</span>
+            </div>
+            <div class="act-lb-item">
+              <span class="act-lb-rank">#3</span>
+              <div class="act-lb-avatar" style="background:#C7D2FE;">RM</div>
+              <span class="act-lb-name">Riya M.</span>
+              <span class="act-lb-xp">2420 XP</span>
+            </div>
+            <div class="act-lb-item">
+              <span class="act-lb-rank">#4</span>
+              <div class="act-lb-avatar" style="background:#C7D2FE;">DP</div>
+              <span class="act-lb-name">Dev P.</span>
+              <span class="act-lb-xp">2280 XP</span>
+            </div>
+            <div class="act-lb-item">
+              <span class="act-lb-rank">#5</span>
+              <div class="act-lb-avatar" style="background:#C7D2FE;">AR</div>
+              <span class="act-lb-name">Ananya R.</span>
+              <span class="act-lb-xp">2150 XP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /act-activities tab -->
+
+    <!-- ── LIBRARY TAB ── -->
+    <div class="act-tab-content" data-tab="act-library" style="display:none;">
+
+      <!-- 3 stat cards -->
+      <div class="act-lib-stats">
+        <div class="act-lib-stat">
+          <div class="act-lib-stat-icon">📖</div>
+          <div>
+            <div class="act-lib-val">70</div>
+            <div class="act-lib-label">Total Visits</div>
+          </div>
+          <span class="act-lib-delta">↗ +8%</span>
+        </div>
+        <div class="act-lib-stat">
+          <div class="act-lib-stat-icon">📗</div>
+          <div>
+            <div class="act-lib-val">27</div>
+            <div class="act-lib-label">Books Borrowed</div>
+          </div>
+          <span class="act-lib-delta">↗ +5%</span>
+        </div>
+        <div class="act-lib-stat">
+          <div class="act-lib-stat-icon">💾</div>
+          <div>
+            <div class="act-lib-val">126</div>
+            <div class="act-lib-label">Digital Resources</div>
+          </div>
+          <span class="act-lib-delta">↗ +18%</span>
+        </div>
+      </div>
+
+      <!-- Library Usage Trends chart -->
+      <div class="card" style="margin-top:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span style="color:var(--brand);">📖</span>
+          <span class="card-title" style="margin:0;">Library Usage Trends</span>
+        </div>
+        <canvas id="actLibChart" height="140"></canvas>
+      </div>
+    </div><!-- /act-library tab -->
+
+    <!-- ── TEACHERS TAB ── -->
+    <div class="act-tab-content" data-tab="act-teachers" style="display:none;">
+
+      <!-- Teacher Activity & Mentoring -->
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <span style="color:var(--brand);">👤</span>
+          <span class="card-title" style="margin:0;">Teacher Activity &amp; Mentoring</span>
+        </div>
+        <div class="act-teacher-list">
+          <div class="act-teacher-item">
+            <div class="act-teacher-avatar">MS</div>
+            <div class="act-teacher-info">
+              <div class="act-teacher-name">Ms. Sharma</div>
+              <div class="act-teacher-sub">Mathematics</div>
+            </div>
+            <div class="act-teacher-stats">
+              <div class="act-teacher-stat"><span class="act-stat-val">8h</span><span class="act-stat-lbl">Mentoring</span></div>
+              <div class="act-teacher-stat"><span class="act-stat-val">12</span><span class="act-stat-lbl">Feedbacks</span></div>
+            </div>
+            <span class="act-teacher-date">Mar 28</span>
+          </div>
+          <div class="act-teacher-item">
+            <div class="act-teacher-avatar">MP</div>
+            <div class="act-teacher-info">
+              <div class="act-teacher-name">Mr. Patel</div>
+              <div class="act-teacher-sub">Physics</div>
+            </div>
+            <div class="act-teacher-stats">
+              <div class="act-teacher-stat"><span class="act-stat-val">5h</span><span class="act-stat-lbl">Mentoring</span></div>
+              <div class="act-teacher-stat"><span class="act-stat-val">8</span><span class="act-stat-lbl">Feedbacks</span></div>
+            </div>
+            <span class="act-teacher-date">Mar 27</span>
+          </div>
+          <div class="act-teacher-item">
+            <div class="act-teacher-avatar">DS</div>
+            <div class="act-teacher-info">
+              <div class="act-teacher-name">Dr. Singh</div>
+              <div class="act-teacher-sub">English</div>
+            </div>
+            <div class="act-teacher-stats">
+              <div class="act-teacher-stat"><span class="act-stat-val">6h</span><span class="act-stat-lbl">Mentoring</span></div>
+              <div class="act-teacher-stat"><span class="act-stat-val">15</span><span class="act-stat-lbl">Feedbacks</span></div>
+            </div>
+            <span class="act-teacher-date">Mar 26</span>
+          </div>
+          <div class="act-teacher-item">
+            <div class="act-teacher-avatar">MG</div>
+            <div class="act-teacher-info">
+              <div class="act-teacher-name">Ms. Gupta</div>
+              <div class="act-teacher-sub">Computer Science</div>
+            </div>
+            <div class="act-teacher-stats">
+              <div class="act-teacher-stat"><span class="act-stat-val">10h</span><span class="act-stat-lbl">Mentoring</span></div>
+              <div class="act-teacher-stat"><span class="act-stat-val">9</span><span class="act-stat-lbl">Feedbacks</span></div>
+            </div>
+            <span class="act-teacher-date">Mar 28</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student–Teacher Communication -->
+      <div class="card">
+        <div class="card-title">Student–Teacher Communication</div>
+        <div class="act-private-banner">
+          <div class="act-private-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="act-private-title">Private &amp; Secure</div>
+          <div class="act-private-desc">Student–teacher communications are end-to-end encrypted and only visible to involved parties. AI does not access message content — only metadata (frequency, response times) is used for engagement analysis.</div>
+          <div class="act-private-badge">🔒 Privacy Protected</div>
+        </div>
+      </div>
+    </div><!-- /act-teachers tab -->
+
+  </div><!-- /page -->
+  </div><!-- /page-activities -->
+
+  <!-- ══════════════════════════════════════
+       Goals Page
+  ══════════════════════════════════════ -->
+  <div id="page-goals" class="page-view" style="display:none;">
+  <div class="page">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:22px;">
+      <div>
+        <h1 style="font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;">Goals &amp; Interest-Based Learning</h1>
+        <p class="sub">Streaks, reflection validation, XP system &amp; rewards.</p>
+      </div>
+    </div>
+
+    <!-- Top 3 stat cards -->
+    <div class="goals-stat-row">
+      <!-- Level -->
+      <div class="card goals-level-card">
+        <div class="goals-level-circle">L12</div>
+        <div class="goals-level-body">
+          <div class="goals-level-title">Level 12</div>
+          <div class="goals-level-bar-wrap">
+            <div class="goals-level-bar"><div class="goals-level-fill" style="width:88%"></div></div>
+          </div>
+          <div class="goals-level-xp">2650/3000 XP</div>
+        </div>
+      </div>
+      <!-- Day Streak -->
+      <div class="card goals-mini-stat">
+        <div class="goals-mini-icon" style="background:#FFF7ED;">🔥</div>
+        <div>
+          <div class="goals-mini-val">12</div>
+          <div class="goals-mini-label">Day Streak</div>
+        </div>
+      </div>
+      <!-- Badges Earned -->
+      <div class="card goals-mini-stat">
+        <div class="goals-mini-icon" style="background:#ECFDF5;">🏆</div>
+        <div>
+          <div class="goals-mini-val">8</div>
+          <div class="goals-mini-label">Badges Earned</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interest-Based Learning Streaks -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <span style="color:var(--brand);font-size:16px;">✦</span>
+        <span class="card-title" style="margin:0;">Interest-Based Learning Streaks</span>
+      </div>
+      <div class="goals-streak-list">
+
+        <!-- Machine Learning -->
+        <div class="goals-streak-item">
+          <div class="goals-streak-top">
+            <span style="font-size:16px;">🔥</span>
+            <span class="goals-streak-name">Machine Learning</span>
+            <span class="goals-streak-days">18 days</span>
+            <span class="goals-validated">✓ Validated</span>
+            <span class="goals-streak-date">Today</span>
+          </div>
+          <div class="goals-reflect-label">📝 Daily reflection (validates your streak):</div>
+          <textarea class="goals-reflect-textarea" placeholder="What did you learn about Machine Learning today?"></textarea>
+          <button class="goals-submit-btn" onclick="submitReflection(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Submit Reflection
+          </button>
+        </div>
+
+        <!-- Creative Writing -->
+        <div class="goals-streak-item">
+          <div class="goals-streak-top">
+            <span style="font-size:16px;">🔥</span>
+            <span class="goals-streak-name">Creative Writing</span>
+            <span class="goals-streak-days">7 days</span>
+            <span class="goals-streak-date">Today</span>
+          </div>
+          <div class="goals-reflect-label">📝 Daily reflection (validates your streak):</div>
+          <textarea class="goals-reflect-textarea" placeholder="What did you learn about Creative Writing today?"></textarea>
+          <button class="goals-submit-btn" onclick="submitReflection(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Submit Reflection
+          </button>
+        </div>
+
+        <!-- Physics Experiments -->
+        <div class="goals-streak-item">
+          <div class="goals-streak-top">
+            <span style="font-size:16px;">🔥</span>
+            <span class="goals-streak-name">Physics Experiments</span>
+            <span class="goals-streak-days">12 days</span>
+            <span class="goals-streak-date">Yesterday</span>
+          </div>
+          <div class="goals-reflect-label">📝 Daily reflection (validates your streak):</div>
+          <textarea class="goals-reflect-textarea" placeholder="What did you learn about Physics Experiments today?"></textarea>
+          <button class="goals-submit-btn" onclick="submitReflection(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Submit Reflection
+          </button>
+        </div>
+
+        <!-- Debate & Rhetoric -->
+        <div class="goals-streak-item">
+          <div class="goals-streak-top">
+            <span style="font-size:16px;">🔥</span>
+            <span class="goals-streak-name">Debate &amp; Rhetoric</span>
+            <span class="goals-streak-days">5 days</span>
+            <span class="goals-validated">✓ Validated</span>
+            <span class="goals-streak-date">Today</span>
+          </div>
+          <div class="goals-reflect-label">📝 Daily reflection (validates your streak):</div>
+          <textarea class="goals-reflect-textarea" placeholder="What did you learn about Debate &amp; Rhetoric today?"></textarea>
+          <button class="goals-submit-btn" onclick="submitReflection(this)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Submit Reflection
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Interest Activity Chart -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">Interest Activity (min/day)</div>
+      <canvas id="goalsInterestChart" height="140"></canvas>
+    </div>
+
+    <!-- Active Goals + Rewards -->
+    <div class="goals-two-col">
+
+      <!-- Active Goals -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span style="color:var(--brand);">🎯</span>
+          <span class="card-title" style="margin:0;">Active Goals</span>
+        </div>
+        <div class="goals-active-list">
+          <div class="goals-goal-item">
+            <div class="goals-goal-top">
+              <span class="goals-goal-name">Score 90+ in Math</span>
+              <span class="goals-xp-badge">⚡ 200 XP</span>
+            </div>
+            <div class="goals-goal-meta">
+              <span class="goals-cat-tag">Academic</span>
+              <span class="goals-due-tag">Due Apr 15</span>
+            </div>
+            <div class="goals-goal-bar"><div class="goals-goal-fill" style="width:78%"></div></div>
+            <div class="goals-goal-pct">78%</div>
+          </div>
+          <div class="goals-goal-item">
+            <div class="goals-goal-top">
+              <span class="goals-goal-name">Read 5 books this month</span>
+              <span class="goals-xp-badge">⚡ 150 XP</span>
+            </div>
+            <div class="goals-goal-meta">
+              <span class="goals-cat-tag">Personal</span>
+              <span class="goals-due-tag">Due Apr 30</span>
+            </div>
+            <div class="goals-goal-bar"><div class="goals-goal-fill" style="width:60%"></div></div>
+            <div class="goals-goal-pct">60%</div>
+          </div>
+          <div class="goals-goal-item">
+            <div class="goals-goal-top">
+              <span class="goals-goal-name">Attend all debate sessions</span>
+              <span class="goals-xp-badge">⚡ 100 XP</span>
+            </div>
+            <div class="goals-goal-meta">
+              <span class="goals-cat-tag">Activity</span>
+              <span class="goals-due-tag">Due Apr 10</span>
+            </div>
+            <div class="goals-goal-bar"><div class="goals-goal-fill" style="width:85%"></div></div>
+            <div class="goals-goal-pct">85%</div>
+          </div>
+          <div class="goals-goal-item">
+            <div class="goals-goal-top">
+              <span class="goals-goal-name">Complete ML course module 5</span>
+              <span class="goals-xp-badge">⚡ 300 XP</span>
+            </div>
+            <div class="goals-goal-meta">
+              <span class="goals-cat-tag">Interest</span>
+              <span class="goals-due-tag">Due Apr 20</span>
+            </div>
+            <div class="goals-goal-bar"><div class="goals-goal-fill" style="width:45%"></div></div>
+            <div class="goals-goal-pct">45%</div>
+          </div>
+          <div class="goals-goal-item">
+            <div class="goals-goal-top">
+              <span class="goals-goal-name">Submit science project</span>
+              <span class="goals-xp-badge">⚡ 300 XP</span>
+            </div>
+            <div class="goals-goal-meta">
+              <span class="goals-cat-tag">Academic</span>
+              <span class="goals-due-tag">Due Apr 5</span>
+            </div>
+            <div class="goals-goal-bar"><div class="goals-goal-fill" style="width:95%"></div></div>
+            <div class="goals-goal-pct">95%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rewards -->
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span style="color:var(--orange);">🎁</span>
+          <span class="card-title" style="margin:0;">Rewards</span>
+        </div>
+        <div class="goals-rewards-list">
+          <div class="goals-reward-item">
+            <div class="goals-reward-icon">⭐</div>
+            <div>
+              <div class="goals-reward-name">Custom Avatar Frame</div>
+              <div class="goals-reward-xp">500 XP</div>
+            </div>
+            <span class="goals-reward-arrow">›</span>
+          </div>
+          <div class="goals-reward-item">
+            <div class="goals-reward-icon">⚡</div>
+            <div>
+              <div class="goals-reward-name">Priority Lab Access</div>
+              <div class="goals-reward-xp">1000 XP</div>
+            </div>
+            <span class="goals-reward-arrow">›</span>
+          </div>
+          <div class="goals-reward-item">
+            <div class="goals-reward-icon">🎁</div>
+            <div>
+              <div class="goals-reward-name">Extra Credit Token</div>
+              <div class="goals-reward-xp">1500 XP</div>
+            </div>
+            <span class="goals-reward-arrow">›</span>
+          </div>
+          <div class="goals-reward-item">
+            <div class="goals-reward-icon">🏆</div>
+            <div>
+              <div class="goals-reward-name">Mentorship Session</div>
+              <div class="goals-reward-xp">2500 XP</div>
+            </div>
+            <span class="goals-reward-arrow">›</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /goals-two-col -->
+
+  </div><!-- /page -->
+  </div><!-- /page-goals -->
+
+  <!-- ══════════════════════════════════════
+       Well-being Page
+  ══════════════════════════════════════ -->
+  <div id="page-wellbeing" class="page-view" style="display:none;">
+  <div class="page">
+
+    <!-- Header -->
+    <div style="margin-bottom:22px;">
+      <h1 style="font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;">Well-being</h1>
+      <p class="sub">Track mood, journal thoughts, AI sentiment analysis &amp; personalized well-being tips.</p>
+    </div>
+
+    <!-- How are you feeling? + Mood·Energy·Stress chart -->
+    <div class="wb-top-row">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="color:var(--red);">♡</span>
+          <span class="card-title" style="margin:0;">How are you feeling?</span>
+        </div>
+        <div class="wb-mood-grid">
+          <button class="wb-mood-btn" onclick="selectMood(this,'Great')">
+            <span class="wb-mood-emoji">😊</span>
+            <span class="wb-mood-label">Great</span>
+          </button>
+          <button class="wb-mood-btn" onclick="selectMood(this,'Good')">
+            <span class="wb-mood-emoji">🙂</span>
+            <span class="wb-mood-label">Good</span>
+          </button>
+          <button class="wb-mood-btn selected" onclick="selectMood(this,'Okay')">
+            <span class="wb-mood-emoji">😐</span>
+            <span class="wb-mood-label">Okay</span>
+          </button>
+          <button class="wb-mood-btn" onclick="selectMood(this,'Low')">
+            <span class="wb-mood-emoji">😟</span>
+            <span class="wb-mood-label">Low</span>
+          </button>
+          <button class="wb-mood-btn" onclick="selectMood(this,'Tough')">
+            <span class="wb-mood-emoji">😢</span>
+            <span class="wb-mood-label">Tough</span>
+          </button>
+        </div>
+        <textarea class="wb-journal-textarea" id="wbJournalInput" placeholder="Write about your day... (optional — AI will analyze sentiment privately)"></textarea>
+        <button class="wb-save-btn" onclick="saveWbEntry()">Save Entry</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Mood · Energy · Stress (This Week)</div>
+        <canvas id="wbMoodChart" height="200"></canvas>
+      </div>
+    </div>
+
+    <!-- Sleep vs Performance -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <span style="color:var(--brand);font-size:16px;">🌙</span>
+        <span class="card-title" style="margin:0;">Sleep vs Performance Correlation</span>
+      </div>
+      <canvas id="wbSleepChart" height="130"></canvas>
+    </div>
+
+    <!-- Journal Entries + Dimensions Radar -->
+    <div class="wb-two-col">
+      <div class="card">
+        <div class="card-title">Journal Entries + AI Sentiment</div>
+        <div class="wb-journal-list" id="wbJournalList">
+          <div class="wb-journal-entry">
+            <div class="wb-entry-top">
+              <span class="wb-entry-date">Mar 28</span>
+              <span class="wb-mood-tag">Great</span>
+              <span class="wb-sentiment-tag positive">Positive</span>
+            </div>
+            <div class="wb-entry-text">Felt really productive today. Finished my science project and had a great basketball practice!</div>
+            <div class="wb-entry-ai">✦ Peak productivity correlates with morning study pattern</div>
+          </div>
+          <div class="wb-journal-entry">
+            <div class="wb-entry-top">
+              <span class="wb-entry-date">Mar 27</span>
+              <span class="wb-mood-tag">Okay</span>
+              <span class="wb-sentiment-tag mixed">Mixed</span>
+            </div>
+            <div class="wb-entry-text">Struggled with math homework, but got help from a friend. Feeling better now.</div>
+            <div class="wb-entry-ai">✦ Co-curricular engagement boosting confidence</div>
+          </div>
+          <div class="wb-journal-entry">
+            <div class="wb-entry-top">
+              <span class="wb-entry-date">Mar 26</span>
+              <span class="wb-mood-tag">Good</span>
+              <span class="wb-sentiment-tag positive">Positive</span>
+            </div>
+            <div class="wb-entry-text">Debate practice went really well today. Super excited about the competition!</div>
+            <div class="wb-entry-ai">✦ Co-curricular engagement boosting confidence</div>
+          </div>
+          <div class="wb-journal-entry">
+            <div class="wb-entry-top">
+              <span class="wb-entry-date">Mar 25</span>
+              <span class="wb-mood-tag">Low</span>
+              <span class="wb-sentiment-tag concerned">Concerned</span>
+            </div>
+            <div class="wb-entry-text">Stayed up late studying. Tired all day. Need to manage time better.</div>
+            <div class="wb-entry-ai">✦ ⚠️ Late-night pattern flagged — linked to lower next-day scores</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Well-being Dimensions Radar -->
+      <div class="card wb-radar-card">
+        <div class="card-title">Well-being Dimensions</div>
+        <canvas id="wbDimensionsChart" height="280"></canvas>
+      </div>
+    </div>
+
+    <!-- Personalized AI Well-being Tips -->
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+        <span style="color:var(--brand);font-size:16px;">✦</span>
+        <span class="card-title" style="margin:0;">Personalized AI Well-being Tips</span>
+      </div>
+      <div class="wb-tips-grid">
+        <div class="wb-tip-card">
+          <div class="wb-tip-icon">☀️</div>
+          <div class="wb-tip-text">Take a 10-minute walk between study sessions — your focus dips after 40 mins</div>
+          <div class="wb-tip-source">📊 Based on your session duration data</div>
+          <span class="wb-tip-cat">Physical</span>
+        </div>
+        <div class="wb-tip-card">
+          <div class="wb-tip-icon">🌙</div>
+          <div class="wb-tip-text">Set a study cutoff at 10 PM — late sessions correlate with 12% lower morning scores</div>
+          <div class="wb-tip-source">📊 Detected in your performance-activity correlation</div>
+          <span class="wb-tip-cat">Sleep</span>
+        </div>
+        <div class="wb-tip-card">
+          <div class="wb-tip-icon">🧠</div>
+          <div class="wb-tip-text">Try box breathing when feeling overwhelmed — your stress spikes mid-week</div>
+          <div class="wb-tip-source">📊 Pattern detected in mood + activity logs</div>
+          <span class="wb-tip-cat">Mental</span>
+        </div>
+        <div class="wb-tip-card">
+          <div class="wb-tip-icon">✦</div>
+          <div class="wb-tip-text">Write down 3 things you're grateful for — this has boosted your mood by 0.5 points on days you journal</div>
+          <div class="wb-tip-source">📊 Validated from your 30-day journal history</div>
+          <span class="wb-tip-cat">Emotional</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+  </div><!-- /page-wellbeing -->
+
 </main>
 
 <script>
@@ -1117,17 +2089,18 @@ function showPage(pageId) {
   const quotes = {
     'page-dashboard': '"The only competition is who you were yesterday."',
     'page-mygrowth':  '"Growth is not linear — it\'s exponential when you stay consistent."',
-    'page-learninginsights': '"The only competition is who you were yesterday."'
+    'page-learninginsights': '"The only competition is who you were yesterday."',
+    'page-activities': '"Small daily improvements lead to staggering long-term results."',
+    'page-goals': '"Small daily improvements lead to staggering long-term results."',
+    'page-wellbeing': '"Small daily improvements lead to staggering long-term results."'
   };
   document.getElementById('topbar-quote').textContent = quotes[pageId] || quotes['page-dashboard'];
 
-  if (pageId === 'page-mygrowth') {
-    initMyGrowthCharts();
-    renderMGTab('overview');
-  }
-  if (pageId === 'page-learninginsights') {
-    initLICharts();
-  }
+  if (pageId === 'page-mygrowth') { initMyGrowthCharts(); renderMGTab('overview'); }
+  if (pageId === 'page-learninginsights') { initLICharts(); }
+  if (pageId === 'page-activities') { renderActTab('act-activities'); }
+  if (pageId === 'page-goals') { initGoalsCharts(); }
+  if (pageId === 'page-wellbeing') { initWellbeingCharts(); }
 }
 
 // ── Nav item click ──
@@ -1274,6 +2247,191 @@ function initLICharts() {
       }
     }
   });
+}
+// ── Activities tab switching ──
+let actLibChartInited = false;
+function renderActTab(tab) {
+  document.querySelectorAll('.act-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.act-tab-content').forEach(el => {
+    el.style.display = el.dataset.tab === tab ? 'block' : 'none';
+  });
+  if (tab === 'act-library' && !actLibChartInited) {
+    actLibChartInited = true;
+    new Chart(document.getElementById('actLibChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+        datasets: [
+          { label:'Visits',  data:[8,12,6,9,14,8,11],  backgroundColor:'#4F46E5', borderRadius:5 },
+          { label:'Books',   data:[3,4,2,5,6,3,5],      backgroundColor:'#10B981', borderRadius:5 },
+          { label:'Digital', data:[12,15,17,14,19,21,27],backgroundColor:'#F59E0B', borderRadius:5 },
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:true,
+        plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, font:{size:11} } } },
+        scales:{
+          y:{ min:0, max:28, grid:{color:'#F3F4F6'}, ticks:{font:{size:11}} },
+          x:{ grid:{display:false}, ticks:{font:{size:11}} }
+        }
+      }
+    });
+  }
+}
+// ── Goals Charts ──
+let goalsChartsInited = false;
+function initGoalsCharts() {
+  if (goalsChartsInited) return;
+  goalsChartsInited = true;
+
+  new Chart(document.getElementById('goalsInterestChart'), {
+    type: 'line',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [
+        { label:'ML',      data:[45,47,32,32,60,53,30], borderColor:'#4F46E5', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+        { label:'Writing', data:[20,22,30,15,16,26,42], borderColor:'#10B981', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+        { label:'Physics', data:[30,0,38,0,32,45,20],   borderColor:'#F59E0B', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+        { label:'Debate',  data:[15,18,0,25,10,0,42],   borderColor:'#34D399', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      interaction: { mode:'index', intersect:false },
+      plugins: { legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, font:{size:11} } } },
+      scales: {
+        y: { min:0, max:65, grid:{color:'#F3F4F6'}, ticks:{font:{size:11}} },
+        x: { grid:{display:false}, ticks:{font:{size:11}} }
+      }
+    }
+  });
+}
+
+// ── Reflection submit ──
+function submitReflection(btn) {
+  const textarea = btn.parentElement.querySelector('textarea');
+  if (!textarea.value.trim()) {
+    textarea.style.borderColor = 'var(--red)';
+    setTimeout(() => textarea.style.borderColor = '', 1200);
+    return;
+  }
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Submitted!';
+  btn.style.background = 'var(--green-light)';
+  btn.style.color = 'var(--green)';
+  btn.disabled = true;
+  const top = btn.closest('.goals-streak-item').querySelector('.goals-streak-top');
+  if (!top.querySelector('.goals-validated')) {
+    const v = document.createElement('span');
+    v.className = 'goals-validated';
+    v.textContent = '✓ Validated';
+    top.insertBefore(v, top.querySelector('.goals-streak-date'));
+  }
+}
+// ── Well-being Charts & Interactions ──
+let wbChartsInited = false;
+function initWellbeingCharts() {
+  if (wbChartsInited) return;
+  wbChartsInited = true;
+
+  // Mood·Energy·Stress line chart
+  new Chart(document.getElementById('wbMoodChart'), {
+    type: 'line',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [
+        { label:'Mood',   data:[4,2,5,3,5,5,4], borderColor:'#4F46E5', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+        { label:'Energy', data:[2,2,5,4,2,4,4], borderColor:'#10B981', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+        { label:'Stress', data:[2,1,3,4,3,1,2], borderColor:'#EF4444', tension:.4, pointRadius:4, pointHoverRadius:6, fill:false },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, font:{size:11} } } },
+      scales:{
+        y:{ min:0, max:5, ticks:{ stepSize:1, font:{size:11} }, grid:{color:'#F3F4F6'} },
+        x:{ grid:{display:false}, ticks:{font:{size:11}} }
+      }
+    }
+  });
+
+  // Sleep vs Performance grouped bar
+  new Chart(document.getElementById('wbSleepChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [
+        { label:'Sleep (hrs)', data:[8,5,9,8,5,8,7], backgroundColor:'#10B981', borderRadius:5 },
+        { label:'Performance (%)', data:[82,70,88,80,65,85,78], backgroundColor:'#4F46E5', borderRadius:5 },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, usePointStyle:true, font:{size:11} } } },
+      scales:{
+        y:{ min:0, max:100, grid:{color:'#F3F4F6'}, ticks:{font:{size:11}} },
+        x:{ grid:{display:false}, ticks:{font:{size:11}} }
+      }
+    }
+  });
+
+  // Well-being Dimensions radar
+  new Chart(document.getElementById('wbDimensionsChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Physical','Emotional','Social','Creative','Spiritual'],
+      datasets: [{
+        data:[78, 72, 65, 70, 55],
+        borderColor:'#10B981',
+        backgroundColor:'rgba(16,185,129,.15)',
+        pointBackgroundColor:'#10B981',
+        pointRadius:4,
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:true,
+      plugins:{ legend:{ display:false } },
+      scales:{ r:{ min:0, max:100, ticks:{ stepSize:25, font:{size:9} }, grid:{color:'#E5E7EB'}, pointLabels:{font:{size:11}} } }
+    }
+  });
+}
+
+// ── Mood selector ──
+let selectedMood = 'Okay';
+function selectMood(btn, mood) {
+  document.querySelectorAll('.wb-mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedMood = mood;
+}
+
+// ── Save entry ──
+function saveWbEntry() {
+  const textarea = document.getElementById('wbJournalInput');
+  const text = textarea.value.trim();
+  const sentimentMap = { Great:'positive', Good:'positive', Okay:'mixed', Low:'concerned', Tough:'concerned' };
+  const labelMap = { positive:'Positive', mixed:'Mixed', concerned:'Concerned' };
+  const sentiment = sentimentMap[selectedMood] || 'mixed';
+  const aiMsgs = {
+    positive: '✦ Positive patterns support better learning outcomes',
+    mixed:    '✦ Co-curricular engagement boosting confidence',
+    concerned:'✦ ⚠️ Late-night pattern flagged — linked to lower next-day scores'
+  };
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+  const entry = document.createElement('div');
+  entry.className = 'wb-journal-entry';
+  entry.innerHTML = `
+    <div class="wb-entry-top">
+      <span class="wb-entry-date">${dateStr}</span>
+      <span class="wb-mood-tag">${selectedMood}</span>
+      <span class="wb-sentiment-tag ${sentiment}">${labelMap[sentiment]}</span>
+    </div>
+    <div class="wb-entry-text">${text || 'No note added.'}</div>
+    <div class="wb-entry-ai">${aiMsgs[sentiment]}</div>`;
+  const list = document.getElementById('wbJournalList');
+  list.insertBefore(entry, list.firstChild);
+  textarea.value = '';
+  entry.style.animation = 'fadeIn .4s ease';
 }
 </script>
 </body>

@@ -7,9 +7,8 @@ from agent import run_ai_analysis
 from fastapi import HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-
-# --- 1. ADD THIS LINE ---
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 # Create the database tables
 Base.metadata.create_all(bind=engine)
@@ -143,3 +142,7 @@ async def validation_exception_handler(request, exc):
             "developer_details": exc.errors() # Keeps the exact error for debugging!
         },
     )
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)

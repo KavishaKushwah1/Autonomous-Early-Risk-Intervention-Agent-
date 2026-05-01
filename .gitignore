@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ========================
 # Python / Backend
 # ========================
@@ -85,3 +86,14 @@ htmlcov/
 .DS_Store
 Desktop.ini
 $RECYCLE.BIN/
+=======
+# Python Virtual Environment
+venv/
+__pycache__/
+*.pyc
+
+# Environment Variables (for keeping API keys secret later)
+.env
+# Ignore local database files
+*.db
+>>>>>>> d251f82089e29c94c0d0ac9e639532b78ffaaddc
